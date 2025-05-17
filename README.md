@@ -6,11 +6,12 @@ The purpose of this application is to provide an easy-to-use interface for clini
 
 ## Features:
  - User login and authentication
- - Search with filters
- - Patient record export as .csv-files
+ - User summary page
+ - Record search with filters
+ - Record export as .csv-files
    
 ## Data objects:
- - Patient record: contains basic patient information like name, sex and social security number.
+ - Patient: contains basic patient information like name, sex and social security number.
  - Diagnosis: an ICD11 diagnosis code
  - Sample: patient sample with features type and value
  - Comment: a free comment associated with a patient or a sample

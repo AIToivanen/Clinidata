@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Edit patient</title>
+</head>
+
+<body>
+  <form action="/patients/{{ patient.id }}/edit" method="post">
+    <p>
+      Social security ID (SSID): <br/>
+      <input type="text" name="ssid" value="{{patient.ssid}}" />
+      
+    </p>
+    <p>
+      First name: <br/>
+      <input type="text" name="firstName" , value="{{patient.firstName}}"/>
+    
+    </p>
+    <p>
+      Last name: <br/>
+      <input type="text" name="lastName" , value="{{patient.lastName}}"/>
+    </p>
+    <p>
+      Date of birth: <br/>
+      <input type="text" name="dateOfBirth" , value="{{patient.dateOfBirth}}"/>
+    </p>
+  
+    <input type="submit" value="Accept changes" />
+
+  </form>
+</body>
+
+</html>

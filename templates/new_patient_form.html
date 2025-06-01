@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>New patient</title>
+</head>
+
+<body>
+   <p>
+        <a href="/"> Back to front page </a>
+    </p>
+    
+  <form action="/patients/add" method="post">
+    <p>
+      Social security ID (SSID): <br/>
+      <input type="text" name="ssid" />
+      
+    </p>
+    <p>
+      First name: <br/>
+      <input type="text" name="firstName" />
+    
+    </p>
+    <p>
+      Last name: <br/>
+      <input type="text" name="lastName" />
+    </p>
+    <p>
+      Date of birth: <br/>
+      <input type="text" name="dateOfBirth" />
+    </p>
+  
+    <input type="submit" value="Add patient" />
+
+  </form>
+</body>
+
+</html>

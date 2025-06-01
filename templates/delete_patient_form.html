@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Delete patient</title>
+</head>
+
+<body>
+     <p>
+        <a href="/"> Back to front page </a>
+    </p>
+  <form action="/patients/{{ patient.id }}/delete" method="post">
+    <p>
+        Are you sure you want to delete patient {{patient.id}}, SSID: {{patient.ssid}} ?
+    </p>
+    <p>
+        Note: This also deletes all diagnoses and samples associated with the patient!
+    </p>
+    <input type="submit" name="delete" value="Delete" />
+    <input type="submit" name="cancel" value="Cancel" />
+  </form>
+</body>

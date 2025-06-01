@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Edit diagnosis</title>
+</head>
+
+<body>
+     <p>
+        <a href="/"> Back to front page </a>
+    </p>
+  <form action="/diagnoses/{{ diagnosis.id }}/edit" method="post">
+    <p>
+      Patient ID: <br/>
+      <input type="text" name="patientId", value="{{diagnosis.patientId}}" />
+      
+    </p>
+    <p>
+      ICD11 <Code></Code>: <br/>
+      <input type="text" name="icd11" , value="{{diagnosis.icd11}}"/>
+    
+    </p>
+    <p>
+      Date of diagnosis: <br/>
+      <input type="text" name="dateOfDiagnosis" , value="{{diagnosis.dateOfDiagnosis}}"/>
+    </p>
+    
+    <input type="submit" value="Accept changes" />
+
+  </form>
+</body>
+
+</html>

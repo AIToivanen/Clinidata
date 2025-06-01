@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Patients</title>
+</head>
+
+<body>
+     <p>
+        <a href="/"> Back to front page </a>
+    </p>
+    
+    <h1>Patients</h1>
+    <hr>
+
+    <p>
+        <h3>
+            <a href="/patients/add/form"> Add new patient</a>
+        </h3>
+    </p>
+    <hr>
+    {% for patient in patients %}
+    <p>
+    <a href="/patients/{{patient.id}}"> {{patient.id}} </a> SSID: {{patient.ssid}} |   {{patient.lastName}} {{patient.firstName}}  |  DoB:  {{patient.dateOfBirth}} 
+    <br>
+    <a href="/patients/{{patient.id}}/edit"> Edit</a> |
+    <a href="/patients/{{patient.id}}/delete"> Delete</a>
+    </p>
+    {% endfor %}
+
+</body>
+</html

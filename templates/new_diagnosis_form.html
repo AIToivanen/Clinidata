@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>New diagnosis</title>
+</head>
+
+<body>
+     <p>
+        <a href="/"> Back to front page </a>
+    </p>
+    
+  <form action="/diagnoses/add" method="post">
+    <p>
+      Patient social security ID (SSID): <br/>
+      <input type="text" name="ssid" />
+      
+    </p>
+    <p>
+      ICD11 code: <br/>
+      <input type="text" name="icd11" />
+    
+    </p>
+    <p>
+      Date of diagnosis: <br/>
+      <input type="text" name="dateOfDiagnosis" />
+    </p>
+    
+  
+    <input type="submit" value="Add diagnosis" />
+
+  </form>
+</body>
+
+</html>

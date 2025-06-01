@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Diagnoses</title>
+</head>
+
+<body>
+     <p>
+        <a href="/"> Back to front page </a>
+    </p>
+    
+    <h1>Diagnoses</h1>
+    <hr>
+
+    <p>
+        <h3>
+            <a href="/diagnoses/add/form"> Add new diagnosis</a>
+        </h3>
+    </p>
+    <hr>
+    {% for diagnosis in diagnoses %}
+    <p>
+    <a href="/diagnoses/{{diagnosis.id}}"> {{diagnosis.id}} | patient: {{diagnosis.patientId}}, ICD11:  {{diagnosis.icd11}}, date of diagnosis: {{diagnosis.dateOfDiagnosis}} </a>
+    <br>
+    <a href="/diagnoses/{{diagnosis.id}}/edit"> Edit</a> |
+    <a href="/diagnoses/{{diagnosis.id}}/delete"> Delete</a>
+    </p>
+    {% endfor %}
+
+</body>
+</html

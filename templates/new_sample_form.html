@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>New sample</title>
+</head>
+
+<body>
+     <p>
+        <a href="/"> Back to front page </a>
+    </p>
+    
+  <form action="/samples/add" method="post">
+    <p>
+      Patient social security ID (SSID): <br/>
+      <input type="text" name="ssid"/>
+      
+    </p>
+    <p>
+      Sample type: <br/>
+      <input type="text" name="sampleType"/>
+    
+    </p>
+    <p>
+      Sample measurement: <br/>
+      <input type="text" name="sampleMeasurement" />
+    </p>
+    <p>
+      Measurement value: <br/>
+      <input type="text" name="sampleValue"/>
+    </p>
+    <p>
+      Sample date: <br>
+      <input type="text" name="sampleDate"/>
+    </p>
+  
+    <input type="submit" value="Add sample" />
+
+  </form>
+</body>
+
+</html>

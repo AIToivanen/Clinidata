@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Edit sample</title>
+</head>
+
+<body>
+     <p>
+        <a href="/"> Back to front page </a>
+    </p>
+    
+  <form action="/samples/{{ sample.id }}/edit" method="post">
+    <p>
+      patientId<br/>
+      <input type="text" name="patientId", value="{{sample.patientId}}" />
+      
+    </p>
+    <p>
+      Sample type: <br/>
+      <input type="text" name="sampleType" , value="{{sample.sampleType}}"/>
+    
+    </p>
+    <p>
+      Sample measurement: <br/>
+      <input type="text" name="sampleMeasurement" , value="{{sample.sampleMeasurement}}"/>
+    </p>
+    <p>
+      Measurement value: <br/>
+      <input type="text" name="sampleValue" , value="{{sample.sampleValue}}"/>
+    </p>
+    <p>
+      Sample date: <br>
+      <input type="text" name="sampleDate", value="{{sample.sampleDate}}"/>
+    </p>
+  
+    <input type="submit" value="Accept changes" />
+
+  </form>
+</body>
+
+</html>

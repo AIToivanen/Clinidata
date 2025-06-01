@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Clinidata</title>
+</head>
+
+<body>
+    <h1>Welcome to the Clinidata Healthcare Database, {{user}}</h1>
+    <p>
+        This is where data meets professionals
+    </p>
+
+    
+    {% if session.username %}
+        <p>
+            Total patients:  {{ patients|length }} <br>
+            <a href="/patients">View patients</a>
+        </p>
+        <p>
+            Total diagnoses: {{ diagnoses|length }} <br>
+            <a href="/diagnoses">View diagnoses</a>
+        </p>
+        <p>
+            Total samples: {{ samples|length }} <br>
+            <a href="/samples">View samples</a>
+        </p>
+    {% else %}
+        <p>
+            You are not logged in! <a href="/login/form"> Click here to log in</a>
+        </p>
+    {% endif %}
+    
+</body>
+</html

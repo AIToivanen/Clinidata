@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Samples</title>
+</head>
+
+<body>
+    <p>
+        <a href="/"> Back to front page </a>
+    </p>
+    
+    <h1>Samples</h1>
+    <hr>
+
+    <p>
+        <h3>
+            <a href="/samples/add/form"> Add new sample</a>
+        </h3>
+    </p>
+    <hr>
+    {% for sample in samples %}
+    <p>
+    <a href="/samples/{{sample.id}}"> {{sample.id}} </a> | patient: {{sample.patientId}}, sample type:  {{sample.sampleType}}, measurement type: {{sample.sampleMeasurement}}, measurement value: {{sample.sampleValue}}, sample date: {{sample.sampleDate}}
+    <br>
+    <a href="/sample/{{sample.id}}/edit"> Edit</a> |
+    <a href="/samples/{{sample.id}}/delete"> Delete</a>
+    </p>
+    {% endfor %}
+
+</body>
+</html

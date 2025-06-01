@@ -9,7 +9,7 @@
      <p>
         <a href="/"> Back to front page </a>
     </p>
-    
+
     <h1>Patients</h1>
     <hr>
 
@@ -21,7 +21,7 @@
     <hr>
     {% for patient in patients %}
     <p>
-    <a href="/patients/{{patient.id}}"> {{patient.id}} </a> SSID: {{patient.ssid}} |   {{patient.lastName}} {{patient.firstName}}  |  DoB:  {{patient.dateOfBirth}} 
+    <a href="/patients/{{patient.id}}"> {{patient.id}} - SSID: {{patient.ssid}} </a>  |   {{patient.lastName}} {{patient.firstName}}  |  DoB:  {{patient.dateOfBirth}} 
     <br>
     <a href="/patients/{{patient.id}}/edit"> Edit</a> |
     <a href="/patients/{{patient.id}}/delete"> Delete</a>

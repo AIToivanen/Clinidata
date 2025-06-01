@@ -12,7 +12,7 @@
      <p>
         <a href="/"> Back to front page </a>
     </p>
-    
+
     {% for patient in patients %}
     
         <h1>{{patient.firstName}} {{patient.lastName}}, {{patient.ssid}}</h1>
@@ -22,27 +22,27 @@
         <hr>
         <h3>Diagnoses: </h3>
         {% for diagnosis in diagnoses %}
-        <p>
-        {{ diagnosis.icd11 }}, date of diagnosis: ({{ diagnosis.diagnosisDate }}):
-        <br>
-        <a href= "/edit">Edit</a> |
-        <a href= "/remove">Delete</a>
-        </p>
+            <p>
+            {{ diagnosis.icd11 }}, date of diagnosis: ({{ diagnosis.diagnosisDate }}):
+            <br>
+            <a href="/diagnoses/{{diagnosis.id}}/edit"> Edit</a> |
+            <a href="/diagnoses/{{diagnosis.id}}/delete"> Delete</a>
+            </p>
 
         {% endfor %}
         <hr>
 
         <h3>Samples: </h3>
         {% for sample in samples %}
-        <p>
-        {{sample.sampleDate }}, <br>
-        {{sample.sampleType}}, <br>
-        {{sample.sampleMeasurement}}: {{sample.sampleValue}}<br>
+            <p>
+            {{sample.sampleDate }}, <br>
+            {{sample.sampleType}}, <br>
+            {{sample.sampleMeasurement}}: {{sample.sampleValue}}<br>
 
-        <a href= "/edit">Edit</a> |
-        <a href= "/remove">Delete</a>
-        </p>
-        <hr>
+            <a href="/sample/{{sample.id}}/edit"> Edit</a> |
+            <a href="/samples/{{sample.id}}/delete"> Delete</a>
+            </p>
+            <hr>
         {% endfor %}
     {% endfor %}
 </body>

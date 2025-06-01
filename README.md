@@ -27,9 +27,9 @@ The purpose of this application is to provide an easy-to-use interface for clini
    - the user can log in/out to the created account
    - a logged in user may view listings of patients, diagnoses and samples
    - a logged in user can add items to each listing
-   - each patient, diagnosis and sample has an details page accessible by clicking a link in the listing
-   - each entry in the listings can be edited and deleted (editing broken as of now due to an unknown bug)
-   - each patient details page contains the patient's diagnoses and samples (broken, work in progress)
+   - each patient, diagnosis and sample has an details page accessible by clicking a link in the listing (not much content for diagnoses and samples)
+   - each entry in the listings can be edited and deleted 
+   - each patient details page contains the patient's diagnoses and samples 
 
-The functions (try) to implement the requirements for the submission 2. Namely the patient details page implements a search for diagnoses and samples with the same patient id key.
+The functions (try to) implement the requirements for the submission 2. Namely the patient details page implements a search for diagnoses and samples with the same patient id key.
 

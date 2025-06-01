@@ -101,6 +101,16 @@ def getDiagnoses(diagnosisId=None):
         query= "SELECT * FROM diagnoses"
         return db.query(query)
 
+def getPatientDiagnoses(patientId=None):
+    if (patientId is not None):
+        
+        query= "SELECT * FROM diagnoses WHERE patientsId = ?"
+        return db.query(query, [patientId])
+        
+    else:
+        query= "SELECT * FROM diagnoses"
+        return db.query(query)
+    
 def getSamples(sampleId=None):
     if (sampleId is not None):
         
@@ -110,3 +120,14 @@ def getSamples(sampleId=None):
     else:
         query= "SELECT * FROM samples"
         return db.query(query)
+    
+def getPatientSamples(patientId=None):
+    if (patientId is not None):
+        
+        query= "SELECT * FROM samples WHERE patientsId = ?"
+        return db.query(query, [patientId])
+        
+    else:
+        query= "SELECT * FROM samples"
+        return db.query(query)
+    

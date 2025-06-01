@@ -79,8 +79,10 @@ def showPatients():
 
 @app.route("/patients/<int:patientId>")
 def showPatient(patientId):
-    patient= controller.getPatients(patientId)
-    return render_template("patient_info.html", patients= patient)
+    patient= (controller.getPatients(patientId),)
+    diagnoses= controller.getPatientDiagnoses(patientId)
+    samples= controller.getPatientSamples(patientId)
+    return render_template("patient_info.html", patients= patient, diagnoses= diagnoses, samples= samples)
 
 @app.route("/patients/<int:patientId>/edit", methods= ["GET", "POST"] )
 def editPatient(patientId):

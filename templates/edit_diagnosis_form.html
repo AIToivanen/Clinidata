@@ -6,23 +6,23 @@
 </head>
 
 <body>
-     <p>
+    <p>
         <a href="/"> Back to front page </a>
     </p>
   <form action="/diagnoses/{{ diagnosis.id }}/edit" method="post">
     <p>
       Patient ID: <br/>
-      <input type="text" name="patientId", value="{{diagnosis.patientId}}" />
+      <input type="text" name="patientId" value="{{diagnosis.patientsId}}" />
       
     </p>
     <p>
-      ICD11 <Code></Code>: <br/>
+      ICD11 code: <br/>
       <input type="text" name="icd11" , value="{{diagnosis.icd11}}"/>
     
     </p>
     <p>
       Date of diagnosis: <br/>
-      <input type="text" name="dateOfDiagnosis" , value="{{diagnosis.dateOfDiagnosis}}"/>
+      <input type="text" name="dateOfDiagnosis" , value="{{diagnosis.diagnosisDate}}"/>
     </p>
     
     <input type="submit" value="Accept changes" />

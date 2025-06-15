@@ -72,13 +72,17 @@ def create_user():
     controller.addUser(username, passwordHashed)
     return redirect("/login/form")
 
-@app.route("/users/<int:user_id>")
+@app.route("/users/<int:userid>")
 def showUser(userid):
-    user = controller.getUser(userid)
-    if not user:
-        abort(404)
-    messages = controller.getStats(userid)
-    return render_template("user.html", user=user, messages=messages)
+    user = controller.getUsers(userid)
+    patients= controller.getUserPatients(userid)
+    diagnoses= controller.getUserDiagnoses(userid)
+    samples= controller.getUserSamples(userid)
+    comments= controller.getUserComments(userid)
+    print(str(patients))
+    #if not user:
+    #    abort(404)
+    return render_template("user_info.html", user=user, userPatients=patients, userDiagnoses= diagnoses, userSamples= samples, userComments= comments)
 
 
 @app.route("/patients/add/form")
@@ -105,7 +109,9 @@ def showPatient(patientId):
     patient= (controller.getPatients(patientId),)
     diagnoses= controller.getPatientDiagnoses(patientId)
     samples= controller.getPatientSamples(patientId)
-    return render_template("patient_info.html", patients= patient, diagnoses= diagnoses, samples= samples)
+    comments= controller.getPatientComments(patientId)
+    return render_template("patient_info.html", patients= patient, diagnoses= diagnoses, samples= samples, comments= comments)
+
 
 @app.route("/patients/<int:patientId>/comment/form")
 def commentPatientForm(patientId):

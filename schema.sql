@@ -47,4 +47,5 @@ CREATE TABLE comments (
     commentDate TEXT,
     FOREIGN KEY (usersId) REFERENCES users (id),
     FOREIGN KEY (patientsId) REFERENCES patients (id)
-)
+);
+

@@ -38,12 +38,11 @@ The functions (try to) implement the requirements for the submission 2. Namely t
 
 # Progress update for submission 3
 
-## Unfortunately, the application is quite broken as a result of the new updates. Will fix ASAP.
-
 ## New features:
  - User page with counts of different data-items posted
  - Free-form comments on patient pages
  - Patient search based on first name, last name, or SSID
+ - Pre-determined classes for sample type
 
 Users are able to add new samples and diagnoses to patients added by any user. 
 

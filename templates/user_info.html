@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+
+
+
+<head>
+    <title>User info</title>
+</head>
+
+ 
+<body>
+     <p>
+        <a href="/"> Back to front page </a>
+    </p>
+ <h1>{{user.username}}</h1>
+    <hr>
+    <h3>Patients added: {{userPatients | count}} </h3>
+    <br>
+    <p>
+    {% for patient in userPatients %}
+    
+        {{patient.ssid}} | {{patient.firstName}} {{patient.lastName}}, ( {{patient.dateOfBirth}} )
+        <br>
+    {% endfor %}
+    </p>
+    <hr>
+
+    <h3>Comments sent: {{userComments | count}} </h3>
+<br>
+
+    {% for comment in userComments %}
+        <p>
+        Commented on patient {{ comment.patientsId }} on ({{ comment.commentDate }}):
+        <br>
+            {{comment.content}}
+        <br>
+        </p>
+
+    {% endfor %}
+    <hr>
+
+    <h3>Diagnoses added: {{userDiagnoses | count}} </h3>
+    <br>
+    <p>
+        {% for diagnosis in userDiagnoses %}
+            {{ diagnosis.icd11 }} for patient {{diagnosis.patientsId}}, date of diagnosis: ({{ diagnosis.diagnosisDate }}):
+            <br>
+    </p>
+
+        {% endfor %}
+        <hr>
+
+        <h3>Samples added: {{userSamples | count}}</h3>
+        <br>
+
+        {% for sample in userSamples %}
+            <p>
+            ({{sample.sampleDate }}) : {{sample.sampleType}}, 
+            {{sample.sampleMeasurement}}: {{sample.sampleValue}}
+            </p>
+        {% endfor %}
+    
+</body>
+</html>

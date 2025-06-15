@@ -6,12 +6,21 @@
 </head>
 
 <body>
-    <h1>Welcome to the Clinidata Healthcare Database, {{user}}</h1>
+
+    {% if session.username %}
+    <h1>Welcome to the Clinidata Healthcare Database, {{session.username}}</h1>
     <p>
         This is where data meets professionals
     </p>
 
-    
+    {% else %}
+
+    <h1>Welcome to the Clinidata Healthcare Database, guest</h1>
+    <p>
+        This is where data meets professionals
+    </p>
+    {% endif %}
+
     {% if session.username %}
 
         <form action="/search" method="get">
@@ -38,6 +47,12 @@
         <p>
             Total samples: {{ samples|length }} <br>
             <a href="/samples">View samples</a>
+
+        
+        </p>
+        <hr>
+        <p>
+            <a href="/users/{{session.userid}}">View your user page </a>
         </p>
     {% else %}
         <p>

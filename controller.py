@@ -86,8 +86,17 @@ def addUser(username, passwordHashed, ):
         db.execute(query, [username, passwordHashed])
     except sqlite3.IntegrityError:
         return "Error: username is already taken!"
-
     
+def getUsers(usersId=None):
+    if (usersId is not None):
+        
+        query= "SELECT * FROM users WHERE id = ?"
+        return db.query(query, [usersId])[0]
+        
+    else:
+        query= "SELECT * FROM users"
+        return db.query(query)
+
 
 def deleteUser( id):
     sql= """DELETE FROM patients WHERE id = ?"""
@@ -103,6 +112,11 @@ def getPatients(patientId=None):
         query= "SELECT * FROM patients"
         return db.query(query)
     
+def getUserPatients(usersId):
+        
+    query= "SELECT * FROM patients WHERE usersId = ?"
+    return db.query(query, [usersId])
+    
 def getDiagnoses(diagnosisId=None):
     if (diagnosisId is not None):
         
@@ -112,6 +126,11 @@ def getDiagnoses(diagnosisId=None):
     else:
         query= "SELECT * FROM diagnoses"
         return db.query(query)
+    
+def getUserDiagnoses(usersId):
+        
+    query= "SELECT * FROM diagnoses WHERE usersId = ?"
+    return db.query(query, [usersId])
 
 def getPatientDiagnoses(patientId=None):
     if (patientId is not None):
@@ -133,6 +152,11 @@ def getSamples(sampleId=None):
         query= "SELECT * FROM samples"
         return db.query(query)
     
+def getUserSamples(usersId):
+        
+    query= "SELECT * FROM samples WHERE usersId = ?"
+    return db.query(query, [usersId])
+    
 def getPatientSamples(patientId=None):
     if (patientId is not None):
         
@@ -151,6 +175,11 @@ def addComment(patientsId, usersId, content ):
     db.execute(sql, [patientsId, usersId, content])
     id= db.lastInsertId()
     return id
+
+def getUserComments(usersId):
+        
+    query= "SELECT * FROM comments WHERE usersId = ?"
+    return db.query(query, [usersId])
 
 def getPatientComments(patientId=None):
     if (patientId is not None):

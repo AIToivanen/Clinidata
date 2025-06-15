@@ -1,5 +1,5 @@
 from flask import Flask
-from flask import render_template, request, session, redirect
+from flask import render_template, request, session, redirect, abort
 from werkzeug.security import generate_password_hash, check_password_hash
 import config
 import sqlite3
@@ -12,6 +12,10 @@ try:
     user= session["username"]
 except:
     user= "guest"
+
+def requireLogin():
+    if "userid" not in session:
+        abort(403)
 
 @app.route("/")
 def index():
@@ -27,12 +31,14 @@ def loginForm():
 
 @app.route("/login", methods=["POST", "GET"])
 def login():
+
     username= request.form["username"]
     password= request.form["password"]
 
     passwordHashed= db.query("SELECT passwordHashed FROM users WHERE username = ?", (username,))[0][0]
-    
     if check_password_hash(passwordHashed, password):
+  
+        session["userid"]=   db.query("SELECT id FROM users WHERE username = ?", (username,))[0][0]
         session["username"]= username
         return redirect("/")
     else:
@@ -41,11 +47,18 @@ def login():
 @app.route("/logout")
 def logout():
     del session["username"]
+    del session["userid"]
     return redirect("/")
 
 @app.route("/create_user/form")
 def create_user_form():
     return render_template("create_user_form.html")
+
+@app.route("/search")
+def searchPatients():
+    query= request.args.get("query")
+    results= controller.search(query)
+    return render_template("search_results.html", query= query, results= results)
 
 @app.route("/create_user", methods=["POST"])
 def create_user():
@@ -59,6 +72,15 @@ def create_user():
     controller.addUser(username, passwordHashed)
     return redirect("/login/form")
 
+@app.route("/users/<int:user_id>")
+def showUser(userid):
+    user = controller.getUser(userid)
+    if not user:
+        abort(404)
+    messages = controller.getStats(userid)
+    return render_template("user.html", user=user, messages=messages)
+
+
 @app.route("/patients/add/form")
 def addPatientForm():
     return render_template("new_patient_form.html")
@@ -69,7 +91,8 @@ def addPatient():
     firstName= request.form["firstName"]
     lastName= request.form["lastName"]
     dateOfBirth= request.form["dateOfBirth"]
-    patientId= controller.addPatient(ssid, firstName, lastName, dateOfBirth)
+    userId= session["userid"]
+    patientId= controller.addPatient(ssid, firstName, lastName, dateOfBirth, userId)
     return redirect("/patients/"+str(patientId))
 
 @app.route("/patients")
@@ -83,6 +106,18 @@ def showPatient(patientId):
     diagnoses= controller.getPatientDiagnoses(patientId)
     samples= controller.getPatientSamples(patientId)
     return render_template("patient_info.html", patients= patient, diagnoses= diagnoses, samples= samples)
+
+@app.route("/patients/<int:patientId>/comment/form")
+def commentPatientForm(patientId):
+    patient= controller.getPatients(patientId)
+    return render_template("new_comment_form.html", patient= patient)
+
+@app.route("/patients/<int:patientId>/comment", methods= ["POST"] )
+def commentPatient(patientId):
+    userid= session["userid"]
+    comment= request.form["content"]
+    commentId= controller.addComment(patientId, userid, comment)
+    return redirect("/patients/"+str(patientId))
 
 @app.route("/patients/<int:patientId>/edit", methods= ["GET", "POST"] )
 def editPatient(patientId):
@@ -116,7 +151,8 @@ def addDiagnosis():
     ssid= request.form["ssid"]
     icd11= request.form["icd11"]
     dateOfDiagnosis= request.form["dateOfDiagnosis"]
-    diagnosisId= controller.addDiagnosis(ssid, icd11, dateOfDiagnosis)
+    userId= session["userid"]
+    diagnosisId= controller.addDiagnosis(ssid, icd11, dateOfDiagnosis, userId)
     return redirect("/diagnoses/"+str(diagnosisId))
     
         
@@ -133,6 +169,9 @@ def showDiagnoses():
 @app.route("/diagnoses/<int:diagnosisId>/edit", methods= ["GET", "POST"] )
 def editDiagnosis(diagnosisId):
     diagnosis= controller.getDiagnoses(diagnosisId)
+
+    #if diagnosis
+    
     if request.method == "GET":
         return render_template("edit_diagnosis_form.html", diagnosis= diagnosis)
     if request.method == "POST":
@@ -163,7 +202,8 @@ def addSample():
     sampleMeasurement= request.form["sampleMeasurement"]
     sampleValue= request.form["sampleValue"]
     sampleDate= request.form["sampleDate"]
-    sampleId= controller.addSample(ssid, sampleType, sampleMeasurement, sampleValue, sampleDate)
+    userId= session["userid"]
+    sampleId= controller.addSample(ssid, sampleType, sampleMeasurement, sampleValue, sampleDate, userId)
     return redirect("/samples/"+str(sampleId))
     
          

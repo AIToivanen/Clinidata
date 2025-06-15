@@ -1,10 +1,19 @@
 import db
 import sqlite3
 
-def addPatient(ssid, firstName, lastName, dateOfBirth):
-    sql= """INSERT INTO patients (ssid, firstName, lastName, dateOfBirth) 
-    VALUES (?, ?, ?, ?)"""
-    db.execute(sql, [ssid, firstName, lastName, dateOfBirth])
+def search(query):
+    sql= """SELECT * FROM patients 
+    WHERE patients.ssid LIKE ? OR
+    patients.firstName LIKE ? OR
+    patients.lastName LIKE ? OR 
+    patients.dateOfBirth LIKE ?
+    ORDER BY patients.lastName"""
+    return db.query(sql, ["%"+ query+ "%"]*4)
+    
+def addPatient(ssid, firstName, lastName, dateOfBirth, usersId):
+    sql= """INSERT INTO patients (ssid, firstName, lastName, dateOfBirth, usersId) 
+    VALUES (?, ?, ?, ?, ?)"""
+    db.execute(sql, [ssid, firstName, lastName, dateOfBirth, usersId])
     patientsId= db.lastInsertId()
     return patientsId
 
@@ -22,6 +31,9 @@ def deletePatient( id):
     sql= """DELETE FROM samples WHERE patientsId = ?"""
     db.execute(sql, [id])
     
+    sql= """DELETE FROM comments WHERE patientsId = ?"""
+    db.execute(sql, [id])
+
     sql= """DELETE FROM patients WHERE id = ?"""
     db.execute(sql, [id])
     
@@ -32,13 +44,13 @@ def getPatientId(ssid):
     except:
         raise KeyError("Patient "+ssid+" not found")
 
-def addSample(ssid, sampleType, sampleMeasurement, sampleValue, sampleDate):
+def addSample(ssid, sampleType, sampleMeasurement, sampleValue, sampleDate, usersId):
 
     patientsId= getPatientId(ssid)
         
-    sql= """INSERT INTO samples (patientsId, sampleType, sampleMeasurement, sampleValue, sampleDate) 
-    VALUES (?, ?, ?, ?, ?)"""
-    db.execute(sql, [patientsId, sampleType, sampleMeasurement, sampleValue, sampleDate])
+    sql= """INSERT INTO samples (patientsId, sampleType, sampleMeasurement, sampleValue, sampleDate, usersId) 
+    VALUES (?, ?, ?, ?, ?, ?)"""
+    db.execute(sql, [patientsId, sampleType, sampleMeasurement, sampleValue, sampleDate, usersId])
     id= db.lastInsertId()
     return id
 
@@ -51,11 +63,11 @@ def deleteSample( id):
     sql= """DELETE FROM samples WHERE id = ?"""
     db.execute(sql, [id])
 
-def addDiagnosis(ssid, icd11, date ):
+def addDiagnosis(ssid, icd11, date, usersId ):
     patientsId= getPatientId(ssid)
-    sql= """INSERT INTO diagnoses (patientsId, icd11, diagnosisDate) 
-    VALUES (?, ?, ?)"""
-    db.execute(sql, [patientsId, icd11, date ])
+    sql= """INSERT INTO diagnoses (patientsId, icd11, diagnosisDate, usersId) 
+    VALUES (?, ?, ?, ?)"""
+    db.execute(sql, [patientsId, icd11, date , usersId])
     id= db.lastInsertId()
     return id
 
@@ -131,3 +143,21 @@ def getPatientSamples(patientId=None):
         query= "SELECT * FROM samples"
         return db.query(query)
     
+
+def addComment(patientsId, usersId, content ):
+    
+    sql= """INSERT INTO comments (patientsId, usersId, content, commentDate) 
+    VALUES (?, ?, ?, datetime('now'))"""
+    db.execute(sql, [patientsId, usersId, content])
+    id= db.lastInsertId()
+    return id
+
+def getPatientComments(patientId=None):
+    if (patientId is not None):
+        
+        query= "SELECT * FROM comments WHERE patientsId = ?"
+        return db.query(query, [patientId])
+        
+    else:
+        query= "SELECT * FROM comments"
+        return db.query(query)

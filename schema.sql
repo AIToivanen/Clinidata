@@ -3,6 +3,7 @@ CREATE TABLE users (
     id INTEGER PRIMARY KEY,
     username TEXT UNIQUE,
     passwordHashed TEXT
+    
 );
 
 CREATE TABLE patients (
@@ -10,7 +11,9 @@ CREATE TABLE patients (
     firstName TEXT,
     lastName TEXT,
     ssid TEXT UNIQUE,
-    dateOfBirth TEXT
+    dateOfBirth TEXT,
+    usersId INTEGER,
+    FOREIGN KEY (usersId) REFERENCES users (id)
 
 );
 
@@ -19,7 +22,9 @@ CREATE TABLE diagnoses (
     patientsId INTEGER,
     icd11 TEXT,
     diagnosisDate TEXT, 
-    FOREIGN KEY (patientsId) REFERENCES patients (id)
+    usersId INTEGER,
+    FOREIGN KEY (patientsId) REFERENCES patients (id),
+    FOREIGN KEY (usersId) REFERENCES users (id)
 );
 
 CREATE TABLE samples (
@@ -29,7 +34,17 @@ CREATE TABLE samples (
     sampleMeasurement TEXT,
     sampleValue FLOAT,
     sampleDate TEXT,
-    FOREIGN KEY (patientsId) REFERENCES patients (id)
+    usersId INTEGER,
+    FOREIGN KEY (patientsId) REFERENCES patients (id),
+    FOREIGN KEY (usersId) REFERENCES users (id)
 );
 
-
+CREATE TABLE comments (
+    id INTEGER PRIMARY KEY,
+    usersId INTEGER,
+    patientsId INTEGER,
+    content TEXT,
+    commentDate TEXT,
+    FOREIGN KEY (usersId) REFERENCES users (id),
+    FOREIGN KEY (patientsId) REFERENCES patients (id)
+)

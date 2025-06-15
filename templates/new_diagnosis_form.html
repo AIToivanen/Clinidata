@@ -13,17 +13,17 @@
   <form action="/diagnoses/add" method="post">
     <p>
       Patient social security ID (SSID): <br/>
-      <input type="text" name="ssid" />
+      <input type="text" name="ssid" maxlength="11" required />
       
     </p>
     <p>
       ICD11 code: <br/>
-      <input type="text" name="icd11" />
+      <input type="text" name="icd11" maxlength="100" required />
     
     </p>
     <p>
       Date of diagnosis: <br/>
-      <input type="text" name="dateOfDiagnosis" />
+      <input type="text" name="dateOfDiagnosis" maxlength="10" required />
     </p>
     
   

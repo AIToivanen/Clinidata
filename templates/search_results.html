@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Search results</title>
+</head>
+
+<body>
+
+    <p>
+        <a href="/"> Back to front page </a>
+    </p>
+    
+    <form action="/search" method="get">
+                <p>
+                Search for patients: 
+                {% if query %}
+                <input type="text" name="query" value="{{ query }}" />
+                {% else %}
+                <input type="text" name="query" />
+                {% endif %}
+                </p>
+                <input type="submit" value="Search" />
+            </form>
+    {% if query %}
+            <hr />
+            <h2>Search results</h2>
+            
+            <ul>
+            {% for result in results %}
+                <li>
+                <a href="/patients/{{ result.id }}">
+                    {{ result.id }} | {{result.ssid}}
+                </a>
+                <br />
+                {{ result.firstName }} {{ result.lastName }} | {{result.dateOfBirth}}
+                </li>  
+            {% endfor %}
+            </ul>
+        {% endif %}
+
+  </body>
+  </html>

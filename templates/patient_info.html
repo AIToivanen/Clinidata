@@ -20,6 +20,22 @@
         Date of birth: {{patient.dateOfBirth}}
         </p>
         <hr>
+        <h3>Comments:: </h3>
+        <br>
+        <a href="/patients/{{patient.id}}/comment/form"> Add comment</a>
+        <br>
+        
+        {% for comment in comments %}
+            <p>
+            {{ comment.usersId }} on ({{ comment.commentDate }}):
+            <br>
+            {{comment.content}}
+            <br>
+            </p>
+
+        {% endfor %}
+        <hr>
+
         <h3>Diagnoses: </h3>
         {% for diagnosis in diagnoses %}
             <p>

@@ -13,17 +13,17 @@
   <form action="/create_user" method="post">
     <p>
       Enter your username: <br/>
-      <input type="text" name="username" />
+      <input type="text" name="username" maxlength="40" required/>
       
     </p>
     <p>
       Enter your password: <br/>
-      <input type="password" name="password" />
+      <input type="password" name="password"  maxlength="100" required />
     
     </p>
     <p>
       Re-enter your password: <br/>
-      <input type="password" name="password2" />
+      <input type="password" name="password2"  maxlength="100" required/>
     </p>
   
     <input type="submit" value="Create user" />

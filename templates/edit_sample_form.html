@@ -13,25 +13,25 @@
   <form action="/samples/{{ sample.id }}/edit" method="post">
     <p>
       patientId<br/>
-      <input type="text" name="patientId", value="{{sample.patientsId}}" />
+      <input type="text" name="patientId", value="{{sample.patientsId}}" maxlength="100" required/>
       
     </p>
     <p>
       Sample type: <br/>
-      <input type="text" name="sampleType" , value="{{sample.sampleType}}"/>
+      <input type="text" name="sampleType" , value="{{sample.sampleType}}" maxlength="100" required/>
     
     </p>
     <p>
       Sample measurement: <br/>
-      <input type="text" name="sampleMeasurement" , value="{{sample.sampleMeasurement}}"/>
+      <input type="text" name="sampleMeasurement" , value="{{sample.sampleMeasurement}}" maxlength="100" required/>
     </p>
     <p>
       Measurement value: <br/>
-      <input type="text" name="sampleValue" , value="{{sample.sampleValue}}"/>
+      <input type="text" name="sampleValue" , value="{{sample.sampleValue}}" maxlength="100" required />
     </p>
     <p>
       Sample date: <br>
-      <input type="text" name="sampleDate", value="{{sample.sampleDate}}"/>
+      <input type="text" name="sampleDate", value="{{sample.sampleDate}}" maxlength="10" required/>
     </p>
   
     <input type="submit" value="Accept changes" />

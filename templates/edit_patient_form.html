@@ -14,21 +14,21 @@
   <form action="/patients/{{ patient.id }}/edit" method="post">
     <p>
       Social security ID (SSID): <br/>
-      <input type="text" name="ssid" value="{{patient.ssid}}" />
+      <input type="text" name="ssid" value="{{patient.ssid}}" maxlength="11" required />
       
     </p>
     <p>
       First name: <br/>
-      <input type="text" name="firstName" , value="{{patient.firstName}}"/>
+      <input type="text" name="firstName" , value="{{patient.firstName}}" maxlength="100" required />
     
     </p>
     <p>
       Last name: <br/>
-      <input type="text" name="lastName" , value="{{patient.lastName}}"/>
+      <input type="text" name="lastName" , value="{{patient.lastName}}" maxlength="100" required />
     </p>
     <p>
       Date of birth: <br/>
-      <input type="text" name="dateOfBirth" , value="{{patient.dateOfBirth}}"/>
+      <input type="text" name="dateOfBirth" , value="{{patient.dateOfBirth}}" maxlength="10" required/>
     </p>
   
     <input type="submit" value="Accept changes" />

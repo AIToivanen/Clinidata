@@ -13,6 +13,20 @@
 
     
     {% if session.username %}
+
+        <form action="/search" method="get">
+            <p>
+            Search for patients: 
+            {% if query %}
+            <input type="text" name="query" value="{{ query }}" />
+            {% else %}
+            <input type="text" name="query" />
+            {% endif %}
+            </p>
+            <input type="submit" value="Search" />
+        </form>
+        
+
         <p>
             Total patients:  {{ patients|length }} <br>
             <a href="/patients">View patients</a>

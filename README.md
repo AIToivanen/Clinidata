@@ -33,3 +33,18 @@ The purpose of this application is to provide an easy-to-use interface for clini
 
 The functions (try to) implement the requirements for the submission 2. Namely the patient details page implements a search for diagnoses and samples with the same patient id key.
 
+
+----------
+
+# Progress update for submission 3
+
+## Unfortunately, the application is quite broken as a result of the new updates. Will fix ASAP.
+
+## New features:
+ - User page with counts of different data-items posted
+ - Free-form comments on patient pages
+ - Patient search based on first name, last name, or SSID
+
+Users are able to add new samples and diagnoses to patients added by any user. 
+
+The whole application is designed with a very high-trust philosophy, so users are also able to edit and delete each other's added records.

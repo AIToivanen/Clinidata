@@ -12,17 +12,17 @@
   <form action="/diagnoses/{{ diagnosis.id }}/edit" method="post">
     <p>
       Patient ID: <br/>
-      <input type="text" name="patientId" value="{{diagnosis.patientsId}}" />
+      <input type="text" name="patientId" value="{{diagnosis.patientsId}}"  maxlength="100" required />
       
     </p>
     <p>
       ICD11 code: <br/>
-      <input type="text" name="icd11" , value="{{diagnosis.icd11}}"/>
+      <input type="text" name="icd11" , value="{{diagnosis.icd11}}" maxlength="100" required />
     
     </p>
     <p>
       Date of diagnosis: <br/>
-      <input type="text" name="dateOfDiagnosis" , value="{{diagnosis.diagnosisDate}}"/>
+      <input type="text" name="dateOfDiagnosis" , value="{{diagnosis.diagnosisDate}}" maxlength="10" required/>
     </p>
     
     <input type="submit" value="Accept changes" />

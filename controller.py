@@ -1,6 +1,7 @@
 import db
 import sqlite3
 
+
 def search(query):
     sql= """SELECT * FROM patients 
     WHERE patients.ssid LIKE ? OR
@@ -38,11 +39,14 @@ def deletePatient( id):
     db.execute(sql, [id])
     
 def getPatientId(ssid):
-    try:
-        query= "SELECT id FROM patients WHERE ssid = ?"
-        return db.query(query, [ssid])#[0][0]
-    except:
-        raise KeyError("Patient "+ssid+" not found")
+    query= "SELECT id FROM patients WHERE ssid = ?"
+    ids= db.query(query, [ssid])#[0][0]
+    if len(ids)== 0:
+        raise KeyError
+    return ids[0][0]
+        
+    
+    
 
 def addSample(ssid, sampleType, sampleMeasurement, sampleValue, sampleDate, usersId):
 
@@ -56,7 +60,7 @@ def addSample(ssid, sampleType, sampleMeasurement, sampleValue, sampleDate, user
 
 def updateSample(patientsId, sampleType, sampleMeasurement, sampleValue, sampleDate, id):
     sql= """UPDATE samples SET (patientsId, sampleType, sampleMeasurement, sampleValue, sampleDate) 
-    VALUES (?, ?, ?, ?, ?) WHERE id = ?"""
+    = (?, ?, ?, ?, ?) WHERE id = ?"""
     db.execute(sql, [patientsId, sampleType, sampleMeasurement, sampleValue, sampleDate, id])
     
 def deleteSample( id):
@@ -64,7 +68,9 @@ def deleteSample( id):
     db.execute(sql, [id])
 
 def addDiagnosis(ssid, icd11, date, usersId ):
+
     patientsId= getPatientId(ssid)
+
     sql= """INSERT INTO diagnoses (patientsId, icd11, diagnosisDate, usersId) 
     VALUES (?, ?, ?, ?)"""
     db.execute(sql, [patientsId, icd11, date , usersId])
@@ -73,7 +79,7 @@ def addDiagnosis(ssid, icd11, date, usersId ):
 
 def updateDiagnosis(patientsId, icd11, diagnosisDate, id):
     sql= """UPDATE diagnoses SET (patientsId, icd11, diagnosisDate) 
-    VALUES (?, ?, ?) WHERE id = ?"""
+    = (?, ?, ?) WHERE id = ?"""
     db.execute(sql, [patientsId, icd11, diagnosisDate, id])
     
 def deleteDiagnosis( id):

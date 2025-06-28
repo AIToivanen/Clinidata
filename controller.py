@@ -40,7 +40,7 @@ def deletePatient( id):
 def getPatientId(ssid):
     try:
         query= "SELECT id FROM patients WHERE ssid = ?"
-        return db.query(query, [ssid])[0][0]
+        return db.query(query, [ssid])#[0][0]
     except:
         raise KeyError("Patient "+ssid+" not found")
 
@@ -91,7 +91,7 @@ def getUsers(usersId=None):
     if (usersId is not None):
         
         query= "SELECT * FROM users WHERE id = ?"
-        return db.query(query, [usersId])[0]
+        return db.query(query, [usersId])
         
     else:
         query= "SELECT * FROM users"
@@ -106,7 +106,7 @@ def getPatients(patientId=None):
     if (patientId is not None):
         
         query= "SELECT * FROM patients WHERE id = ?"
-        return db.query(query, [patientId])[0]
+        return db.query(query, [patientId])
         
     else:
         query= "SELECT * FROM patients"
@@ -121,7 +121,7 @@ def getDiagnoses(diagnosisId=None):
     if (diagnosisId is not None):
         
         query= "SELECT * FROM diagnoses WHERE id = ?"
-        return db.query(query, [diagnosisId])[0]
+        return db.query(query, [diagnosisId])
         
     else:
         query= "SELECT * FROM diagnoses"
@@ -146,7 +146,7 @@ def getSamples(sampleId=None):
     if (sampleId is not None):
         
         query= "SELECT * FROM samples where id = ?"
-        return db.query(query, [sampleId])[0]
+        return db.query(query, [sampleId])
         
     else:
         query= "SELECT * FROM samples"

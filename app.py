@@ -1,5 +1,5 @@
 from flask import Flask
-from flask import render_template, request, session, redirect, abort
+from flask import render_template, request, session, redirect, abort, flash
 from werkzeug.security import generate_password_hash, check_password_hash
 import config
 import sqlite3
@@ -42,7 +42,7 @@ def login():
         session["username"]= username
         return redirect("/")
     else:
-        "Error: incorrect username or password!"
+        flash("Error: incorrect username or password!")
     
 @app.route("/logout")
 def logout():
@@ -66,7 +66,8 @@ def create_user():
     password= request.form["password"]
     password2= request.form["password2"]
     if password != password2:
-        return "Error: the passwords don't match!"
+        flash("Error: the passwords don't match!")
+        return redirect("/create_user/form")
     
     passwordHashed= generate_password_hash(password)
     controller.addUser(username, passwordHashed)
@@ -79,8 +80,9 @@ def showUser(userid):
     diagnoses= controller.getUserDiagnoses(userid)
     samples= controller.getUserSamples(userid)
     comments= controller.getUserComments(userid)
-    print(str(patients))
-    #if not user:
+    #print(str(patients))
+    if not user:
+        flash("Error: user not found")
     #    abort(404)
     return render_template("user_info.html", user=user, userPatients=patients, userDiagnoses= diagnoses, userSamples= samples, userComments= comments)
 
@@ -106,16 +108,25 @@ def showPatients():
 
 @app.route("/patients/<int:patientId>")
 def showPatient(patientId):
-    patient= (controller.getPatients(patientId),)
+    patient= controller.getPatients(patientId)
     diagnoses= controller.getPatientDiagnoses(patientId)
     samples= controller.getPatientSamples(patientId)
     comments= controller.getPatientComments(patientId)
+    if  len(patient)==0:
+        flash("Error: patient not found")
+        return redirect("/patients")
+    #patient= patient[0]
     return render_template("patient_info.html", patients= patient, diagnoses= diagnoses, samples= samples, comments= comments)
 
 
 @app.route("/patients/<int:patientId>/comment/form")
 def commentPatientForm(patientId):
+    
     patient= controller.getPatients(patientId)
+    if  len(patient)==0:
+        flash("Error: patient not found")
+        return redirect("/patients")
+    patient= patient[0]
     return render_template("new_comment_form.html", patient= patient)
 
 @app.route("/patients/<int:patientId>/comment", methods= ["POST"] )
@@ -128,6 +139,12 @@ def commentPatient(patientId):
 @app.route("/patients/<int:patientId>/edit", methods= ["GET", "POST"] )
 def editPatient(patientId):
     patient= controller.getPatients(patientId)
+    
+    if  len(patient)==0:
+        flash("Error: patient not found")
+        return redirect("/patients")
+    patient= patient[0]
+
     if request.method == "GET":
         return render_template("edit_patient_form.html", patient= patient)
     if request.method == "POST":
@@ -165,6 +182,9 @@ def addDiagnosis():
 @app.route("/diagnoses/<int:diagnosisId>")
 def showDiagnosis(diagnosisId):
     diagnoses= controller.getDiagnoses(diagnosisId)
+    if len(diagnoses)== 0: 
+        flash("Error! Diagnosis not found!")
+        return redirect("/diagnoses")
     return render_template("diagnosis_list.html", diagnoses= diagnoses)
 
 @app.route("/diagnoses")
@@ -176,8 +196,11 @@ def showDiagnoses():
 def editDiagnosis(diagnosisId):
     diagnosis= controller.getDiagnoses(diagnosisId)
 
-    #if diagnosis
-    
+    if len(diagnosis)== 0: 
+        flash("Error! Diagnosis not found!")
+        return redirect("/diagnoses")
+    diagnosis= diagnosis[0]
+
     if request.method == "GET":
         return render_template("edit_diagnosis_form.html", diagnosis= diagnosis)
     if request.method == "POST":
@@ -190,6 +213,10 @@ def editDiagnosis(diagnosisId):
 @app.route("/diagnoses/<int:diagnosisId>/delete", methods= ["GET", "POST"] )
 def deleteDiagnosis(diagnosisId):
     diagnosis= controller.getDiagnoses(diagnosisId)
+    if len(diagnosis)== 0: 
+        flash("Error! Diagnosis not found!")
+        return redirect("/diagnoses")
+    
     if request.method == "GET":
         return render_template("delete_diagnosis_form.html", diagnosis= diagnosis)
     if request.method == "POST":
@@ -216,6 +243,10 @@ def addSample():
 @app.route("/samples/<int:sampleId>")
 def showSample(sampleId):
     samples= controller.getSamples(sampleId)
+    if len(samples)== 0: 
+        flash("Error! Sample not found!")
+        return redirect("/samples")
+    
     return render_template("sample_list.html", samples= samples)
 
 @app.route("/samples")
@@ -226,6 +257,10 @@ def showSamples():
 @app.route("/samples/<int:sampleId>/edit", methods= ["GET", "POST"] )
 def editSample(sampleId):
     sample= controller.getSamples(sampleId)
+    if len(sample)== 0: 
+        flash("Error! Sample not found!")
+        return redirect("/samples")
+    sample= sample[0]
     if request.method == "GET":
         return render_template("edit_sample_form.html", sample= sample)
     if request.method == "POST":
@@ -234,12 +269,16 @@ def editSample(sampleId):
         sampleMeasurement= request.form["sampleMeasurement"]
         sampleValue= request.form["sampleValue"]
         sampleDate= request.form["sampleDate"]
-        controller.updateDiagnosis(patientId, sampleType, sampleMeasurement, sampleValue, sampleDate, sampleId)
+        controller.updateSample(patientId, sampleType, sampleMeasurement, sampleValue, sampleDate, sampleId)
         return redirect("/samples/"+str(sampleId))
     
 @app.route("/samples/<int:sampleId>/delete", methods= ["GET", "POST"] )
 def deleteSample(sampleId):
-    sample= controller.getDiagnoses(sampleId)
+    sample= controller.getSamples(sampleId)
+    if len(sample)== 0: 
+        flash("Error! Sample not found!")
+        return redirect("/samples")
+    sample= sample[0]
     if request.method == "GET":
         return render_template("delete_sample_form.html", sample= sample)
     if request.method == "POST":

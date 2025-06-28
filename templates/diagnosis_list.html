@@ -14,7 +14,7 @@
             <b>{{ message }}</b>
         </p>
     {% endfor %}
-    
+
     <h1>Diagnoses</h1>
     <hr>
 
@@ -26,7 +26,7 @@
     <hr>
     {% for diagnosis in diagnoses %}
     <p>
-    <a href="/diagnoses/{{diagnosis.id}}"> {{diagnosis.id}} | patient: {{diagnosis.patientId}}, ICD11:  {{diagnosis.icd11}}, date of diagnosis: {{diagnosis.dateOfDiagnosis}} </a>
+    <a href="/diagnoses/{{diagnosis.id}}"> {{diagnosis.id}} | patient: {{diagnosis.patientsId}}, ICD11:  {{diagnosis.icd11}}, date of diagnosis: {{diagnosis.diagnosisDate}} </a>
     <br>
     <a href="/diagnoses/{{diagnosis.id}}/edit"> Edit</a> |
     <a href="/diagnoses/{{diagnosis.id}}/delete"> Delete</a>

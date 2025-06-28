@@ -6,10 +6,17 @@
 </head>
 
 <body>
+
+    {% for message in get_flashed_messages() %}
+      <p>
+        <b>{{ message }}</b>
+      </p>
+      {% endfor %}
    <p>
         <a href="/"> Back to front page </a>
     </p>
-    
+
+
   <form action="/create_user" method="post">
     <p>
       Enter your username: <br/>

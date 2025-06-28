@@ -6,9 +6,15 @@
 </head>
 
 <body>
+    {% for message in get_flashed_messages() %}
+        <p>
+            <b>{{ message }}</b>
+        </p>
+    {% endfor %}
      <p>
         <a href="/"> Back to front page </a>
     </p>
+    
   <form action="/patients/{{ patient.id }}/delete" method="post">
     <p>
         Are you sure you want to delete patient {{patient.id}}, SSID: {{patient.ssid}} ?

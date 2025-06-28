@@ -10,6 +10,12 @@
         <a href="/"> Back to front page </a>
     </p>
     
+    {% for message in get_flashed_messages() %}
+        <p>
+            <b>{{ message }}</b>
+        </p>
+    {% endfor %}
+
     <h1>Samples</h1>
     <hr>
 

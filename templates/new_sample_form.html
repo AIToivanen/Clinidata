@@ -9,8 +9,13 @@
      <p>
         <a href="/"> Back to front page </a>
     </p>
+    {% for message in get_flashed_messages() %}
+        <p>
+            <b>{{ message }}</b>
+        </p>
+    {% endfor %}
     
-  <form action="/samples/add" method="post">
+    <form action="/samples/add" method="post">
     <p>
       Patient social security ID (SSID): <br/>
       <input type="text" name="ssid" maxlength="11" required/>

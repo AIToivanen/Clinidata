@@ -10,6 +10,12 @@
         <a href="/"> Back to front page </a>
     </p>
 
+    {% for message in get_flashed_messages() %}
+        <p>
+            <b>{{ message }}</b>
+        </p>
+    {% endfor %}
+    
   <form action="/samples/{{ sample.id }}/edit" method="post">
     <p>
       patientId<br/>

@@ -9,10 +9,17 @@
 
  
 <body>
-     <p>
+    <p>
         <a href="/"> Back to front page </a>
     </p>
- <h1>{{user.username}}</h1>
+
+    {% for message in get_flashed_messages() %}
+        <p>
+            <b>{{ message }}</b>
+        </p>
+    {% endfor %}
+
+    <h1>{{user.username}}</h1>
     <hr>
     <h3>Patients added: {{userPatients | count}} </h3>
     <br>

@@ -7,6 +7,12 @@
 
 <body>
 
+    {% for message in get_flashed_messages() %}
+        <p>
+            <b>{{ message }}</b>
+        </p>
+    {% endfor %}
+
     {% if session.username %}
     <h1>Welcome to the Clinidata Healthcare Database, {{session.username}}</h1>
     <p>

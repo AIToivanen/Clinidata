@@ -136,7 +136,7 @@ def showUser(userid):
     if not user:
         flash("Error: user not found")
     #    abort(404)
-    return render_template("user_info.html", user=user, userPatients=patients, userDiagnoses= diagnoses, userSamples= samples, userComments= comments)
+    return render_template("user_info.html", user=user[0], userPatients=patients, userDiagnoses= diagnoses, userSamples= samples, userComments= comments)
 
 
 @app.route("/patients/add/form")

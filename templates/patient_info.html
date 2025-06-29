@@ -24,6 +24,9 @@
         <p>
         Date of birth: {{patient.dateOfBirth}}
         </p>
+        <br>
+        Added by: <a href="/users/{{patient.usersId}}" > {{patient.username}} </a>
+        <br>
         <hr>
         <h3>Comments: </h3>
         
@@ -32,7 +35,7 @@
         
         {% for comment in comments %}
             <p>
-            {{ comment.usersId }} on ({{ comment.commentDate }}):
+            {{ comment.username }} on ({{ comment.commentDate }}):
             <br>
             {{comment.content}}
             <br>

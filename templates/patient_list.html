@@ -14,7 +14,7 @@
             <b>{{ message }}</b>
         </p>
     {% endfor %}
-    
+
     <h1>Patients</h1>
     <hr>
 
@@ -27,6 +27,8 @@
     {% for patient in patients %}
     <p>
     <a href="/patients/{{patient.id}}"> {{patient.id}} - SSID: {{patient.ssid}} </a>  |   {{patient.lastName}} {{patient.firstName}}  |  DoB:  {{patient.dateOfBirth}} 
+    <br>
+    Added by: <a href="/users/{{patient.usersId}}" > {{patient.username}} </a>
     <br>
     <a href="/patients/{{patient.id}}/edit"> Edit</a> |
     <a href="/patients/{{patient.id}}/delete"> Delete</a>

@@ -49,7 +49,12 @@ def login():
     username= request.form["username"]
     password= request.form["password"]
 
-    passwordHashed= db.query("SELECT passwordHashed FROM users WHERE username = ?", (username,))[0][0]
+    try:
+        passwordHashed= db.query("SELECT passwordHashed FROM users WHERE username = ?", (username,))[0][0]
+    except:
+        flash("Error: incorrect username or password!")
+        return redirect("/login/form")
+    
     if check_password_hash(passwordHashed, password):
   
         session["userid"]=   db.query("SELECT id FROM users WHERE username = ?", (username,))[0][0]
@@ -89,6 +94,16 @@ def create_user():
     password2= request.form["password2"]
     filled= {"username": username,
              "password": password}
+    
+    if len(username)< 4 or len(username) > 40:
+        flash("Error! Please enter a valid username (3-40 characters)")
+        return render_template("create_user_form.html", filled= filled)
+    
+    if len(password)== 0 or len(password) > 100:
+        flash("Error! Please enter a valid password (1-100 characters)")
+        return render_template("create_user_form.html", filled= filled)
+    
+
     
     if password != password2:
         flash("Error: the passwords don't match!")

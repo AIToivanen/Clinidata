@@ -49,6 +49,7 @@ def login():
 def logout():
     del session["username"]
     del session["userid"]
+    flash("Logged out successfully")
     return redirect("/")
 
 @app.route("/create_user/form")

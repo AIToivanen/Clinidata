@@ -110,11 +110,17 @@ def deleteUser( id):
 def getPatients(patientId=None):
     if (patientId is not None):
         
-        query= "SELECT id, firstName, lastName, ssid, dateOfBirth, usersId FROM patients WHERE id = ?"
+        query= """SELECT patients.id, patients.firstName, patients.lastName, patients.ssid, patients.dateOfBirth, patients.usersId, users.username
+                FROM patients 
+                JOIN users ON patients.usersId = users.id
+                WHERE patients.id = ?"""
         return db.query(query, [patientId])
         
     else:
-        query= "SELECT id, firstName, lastName, ssid, dateOfBirth, usersId FROM patients"
+        query= """SELECT patients.id, patients.firstName, patients.lastName, patients.ssid, patients.dateOfBirth, patients.usersId, users.username
+                FROM patients 
+                JOIN users ON patients.usersId = users.id
+                """
         return db.query(query)
     
 def getUserPatients(usersId):
@@ -125,11 +131,17 @@ def getUserPatients(usersId):
 def getDiagnoses(diagnosisId=None):
     if (diagnosisId is not None):
         
-        query= "SELECT id, patientsId, icd11, diagnosisDate, usersId FROM diagnoses WHERE id = ?"
+        query= """SELECT diagnoses.id, diagnoses.patientsId, diagnoses.icd11, diagnoses.diagnosisDate, diagnoses.usersId, users.username
+                FROM diagnoses 
+                JOIN users ON diagnoses.usersId = users.id
+                WHERE diagnoses.id = ?"""
         return db.query(query, [diagnosisId])
         
     else:
-        query= "SELECT id, patientsId, icd11, diagnosisDate, usersId FROM diagnoses"
+        query= """SELECT diagnoses.id, diagnoses.patientsId, diagnoses.icd11, diagnoses.diagnosisDate, diagnoses.usersId,  users.username
+                FROM diagnoses 
+                JOIN users ON diagnoses.usersId = users.id
+                """ 
         return db.query(query)
     
 def getUserDiagnoses(usersId):
@@ -140,7 +152,10 @@ def getUserDiagnoses(usersId):
 def getPatientDiagnoses(patientId=None):
     if (patientId is not None):
         
-        query= "SELECT id, patientsId, icd11, diagnosisDate, usersId FROM diagnoses WHERE patientsId = ?"
+        query= """SELECT diagnoses.id, diagnoses.patientsId, diagnoses.icd11, diagnoses.diagnosisDate, diagnoses.usersId,  users.username
+                FROM diagnoses 
+                JOIN users ON diagnoses.usersId = users.id
+                WHERE diagnoses.patientsId = ?"""
         return db.query(query, [patientId])
         
     else:
@@ -150,26 +165,45 @@ def getPatientDiagnoses(patientId=None):
 def getSamples(sampleId=None):
     if (sampleId is not None):
         
-        query= "SELECT id, patientsId, sampleType, sampleMeasurement, sampleValue, sampleDate, usersId FROM samples where id = ?"
+        query= """SELECT samples.id, samples.patientsId, samples.sampleType, samples.sampleMeasurement, samples.sampleValue, 
+                samples.sampleDate, samples.usersId, users.username
+                FROM samples
+                JOIN users ON samples.usersId = users.id
+                WHERE samples.id = ?"""
         return db.query(query, [sampleId])
         
     else:
-        query= "SELECT id, patientsId, sampleType, sampleMeasurement, sampleValue, sampleDate, usersId FROM samples"
+        query= """SELECT samples.id, samples.patientsId, samples.sampleType, samples.sampleMeasurement, samples.sampleValue, 
+                samples.sampleDate, samples.usersId, users.username
+                FROM samples
+                JOIN users ON samples.usersId = users.id"""
         return db.query(query)
     
 def getUserSamples(usersId):
         
-    query= "SELECT id, patientsId, sampleType, sampleMeasurement, sampleValue, sampleDate, usersId FROM samples WHERE usersId = ?"
+    query= """SELECT samples.id, samples.patientsId, samples.sampleType, samples.sampleMeasurement, samples.sampleValue, 
+                samples.sampleDate, samples.usersId, users.username
+                FROM samples
+                JOIN users ON samples.usersId = users.id
+                WHERE samples.usersId = ?"""
     return db.query(query, [usersId])
     
 def getPatientSamples(patientId=None):
     if (patientId is not None):
         
-        query= "SELECT id, patientsId, sampleType, sampleMeasurement, sampleValue, sampleDate, usersId FROM samples WHERE patientsId = ?"
+        query= """SELECT samples.id, samples.patientsId, samples.sampleType, samples.sampleMeasurement, samples.sampleValue, 
+                samples.sampleDate, samples.usersId, users.username
+                FROM samples
+                JOIN users ON samples.usersId = users.id
+                WHERE samples.patientsId = ?"""
         return db.query(query, [patientId])
         
     else:
-        query= "SELECT id, patientsId, sampleType, sampleMeasurement, sampleValue, sampleDate, usersId FROM samples"
+        query= """SELECT samples.id, samples.patientsId, samples.sampleType, samples.sampleMeasurement, samples.sampleValue, 
+                samples.sampleDate, samples.usersId, users.username
+                FROM samples
+                JOIN users ON samples.usersId = users.id
+                """
         return db.query(query)
     
 
@@ -183,13 +217,19 @@ def addComment(patientsId, usersId, content ):
 
 def getUserComments(usersId):
         
-    query= "SELECT id, usersId, patientsId, content, commentDate FROM comments WHERE usersId = ?"
+    query= """SELECT comments.id, comments.usersId, comments.patientsId, comments.content, comments.commentDate, users.username 
+    FROM comments 
+    JOIN users ON comments.usersId = users.id
+    WHERE comments.usersId = ?"""
     return db.query(query, [usersId])
 
 def getPatientComments(patientId=None):
     if (patientId is not None):
         
-        query= "SELECT id, usersId, patientsId, content, commentDate FROM comments WHERE patientsId = ?"
+        query= """SELECT comments.id, comments.usersId, comments.patientsId, comments.content, comments.commentDate, users.username 
+        FROM comments 
+        JOIN users ON comments.usersId = users.id
+        WHERE comments.patientsId = ?"""
         return db.query(query, [patientId])
         
     else:

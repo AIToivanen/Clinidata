@@ -47,3 +47,21 @@ The functions (try to) implement the requirements for the submission 2. Namely t
 Users are able to add new samples and diagnoses to patients added by any user. 
 
 The whole application is designed with a very high-trust philosophy, so users are also able to edit and delete each other's added records.
+
+
+----------
+
+# Progress update for final submission
+
+## New features:
+ - Username of item creator is displayed in item listings
+ - Public user profiles reachable by links
+ - Csrf-protection
+ - Login validation for most functions
+ - Input constraints and backend checks
+ - Flash error message handling
+ - Persistence of reviously filled input form values 
+ - more
+
+
+ Unfortunately I ran out of time here, so I wish to not receive an evaluation for this course.

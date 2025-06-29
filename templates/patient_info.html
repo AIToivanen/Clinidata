@@ -25,8 +25,8 @@
         Date of birth: {{patient.dateOfBirth}}
         </p>
         <hr>
-        <h3>Comments:: </h3>
-        <br>
+        <h3>Comments: </h3>
+        
         <a href="/patients/{{patient.id}}/comment/form"> Add comment</a>
         <br>
         
@@ -42,6 +42,8 @@
         <hr>
 
         <h3>Diagnoses: </h3>
+        <a href="/patients/{{patient.id}}/diagnosis/form"> Add diagnosis</a>
+        <br>
         {% for diagnosis in diagnoses %}
             <p>
             {{ diagnosis.icd11 }}, date of diagnosis: ({{ diagnosis.diagnosisDate }}):
@@ -54,6 +56,8 @@
         <hr>
 
         <h3>Samples: </h3>
+        <a href="/patients/{{patient.id}}/sample/form"> Add sample</a>
+        <br>
         {% for sample in samples %}
             <p>
             {{sample.sampleDate }}, <br>

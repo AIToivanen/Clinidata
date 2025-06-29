@@ -289,8 +289,8 @@ def deletePatient(patientId):
         return redirect("/patients")
     
 @app.route("/diagnoses/add/form" )
-def addDiagnosisForm():
-    return render_template("new_diagnosis_form.html", filled= {})
+def addDiagnosisForm(filled= {}):
+    return render_template("new_diagnosis_form.html", filled= filled)
     
 @app.route("/diagnoses/add", methods= ["POST"] )
 def addDiagnosis():
@@ -320,6 +320,19 @@ def addDiagnosis():
         return render_template("new_diagnosis_form.html", filled= filled)
     
     return redirect("/diagnoses/"+str(diagnosisId))
+
+@app.route("/patients/<int:patientId>/diagnosis/form")
+def diagnosisPatientForm(patientId):
+
+    requireLogin()
+
+    patient= controller.getPatients(patientId)
+    if  len(patient)==0:
+        flash("Error: patient not found")
+        return redirect("/patients")
+    patient= patient[0]
+    return render_template("new_diagnosis_form.html", filled= {"ssid":patient["ssid"]} )
+
     
         
 @app.route("/diagnoses/<int:diagnosisId>")
@@ -435,6 +448,19 @@ def addSample():
     
     
     return redirect("/samples/"+str(sampleId))
+    
+@app.route("/patients/<int:patientId>/sample/form")
+def samplePatientForm(patientId):
+
+    requireLogin()
+
+    patient= controller.getPatients(patientId)
+    if  len(patient)==0:
+        flash("Error: patient not found")
+        return redirect("/patients")
+    patient= patient[0]
+    return render_template("new_sample_form.html", filled= {"ssid":patient["ssid"]} )
+
     
          
 @app.route("/samples/<int:sampleId>")

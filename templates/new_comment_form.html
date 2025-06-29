@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>New sample</title>
+  <title>New comment</title>
 </head>
 
 
@@ -20,10 +20,10 @@
     
     <p>
       Enter comment (max 500 characters): <br />
-      <textarea name="content" rows="10" cols="50"></textarea>
+      <textarea name="content" rows="10" cols="50" value = "{{ filled.content }}" ></textarea>
     </p>
     <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
-    
+
     <input type="submit" value="Send" />
   </form>
 

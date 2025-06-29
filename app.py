@@ -159,7 +159,19 @@ def addPatient():
              "firstName": firstName,
              "lastName": lastName,
              "dateOfBirth": dateOfBirth}
-             
+    
+    if len(ssid) != 11:
+        flash("Error! Please enter a valid SSID (11 characters)")
+        return render_template("new_patient_form.html", filled= filled)
+    
+    if len(firstName)< 1 or len(firstName) > 100:
+        flash("Error! Please enter a valid first name (1-100 characters)")
+        return render_template("new_patient_form.html", filled= filled)
+    
+    if len(lastName)< 1 or len(lastName) > 100:
+        flash("Error! Please enter a valid last name (1-100 characters)")
+        return render_template("new_patient_form.html", filled= filled)
+    
     if not re.match(datePattern, dateOfBirth):
         flash("Error! Please use yyyy-mm-dd date format")
         return render_template("new_patient_form.html", filled= filled)
@@ -207,7 +219,7 @@ def commentPatientForm(patientId):
         flash("Error: patient not found")
         return redirect("/patients")
     patient= patient[0]
-    return render_template("new_comment_form.html", patient= patient)
+    return render_template("new_comment_form.html", filled= {}, patient= patient)
 
 @app.route("/patients/<int:patientId>/comment", methods= ["POST"] )
 def commentPatient(patientId):
@@ -217,6 +229,18 @@ def commentPatient(patientId):
 
     userid= session["userid"]
     comment= request.form["content"]
+
+    patient= controller.getPatients(patientId)
+    if  len(patient)==0:
+        flash("Error: patient not found")
+        return redirect("/patients")
+    patient= patient[0]
+
+    filled= {"content": comment}
+
+    if len(comment)< 1 or len(comment) > 500:
+        flash("Error! Please enter a valid comment (1-500 characters). Current length: "+str(len(comment)))
+        return render_template("new_comment_form.html", filled= filled, patient= patient)
     commentId= controller.addComment(patientId, userid, comment)
     return redirect("/patients/"+str(patientId))
 
@@ -281,6 +305,10 @@ def addDiagnosis():
     filled= {"ssid":ssid, 
              "icd11": icd11,
              "date": dateOfDiagnosis}
+    
+    if len(icd11)< 1 or len(icd11) > 20:
+        flash("Error! Please enter a valid ICD11 code (1-20 characters)")
+        return render_template("new_diagnosis_form.html", filled= filled)
 
     if not re.match(datePattern, dateOfDiagnosis):
         flash("Error! Please use yyyy-mm-dd date format")
@@ -382,6 +410,18 @@ def addSample():
              "sampleMeasurement": sampleMeasurement,
              "sampleValue": sampleValue,
              "sampleDate": sampleDate}
+    
+    if len(sampleType)< 1 or len(sampleType) > 20:
+        flash("Error! Please enter a valid sample type from the list")
+        return render_template("new_sample_form.html", filled= filled)
+    
+    if len(sampleMeasurement)< 1 or len(sampleMeasurement) > 100:
+        flash("Error! Please enter a valid sample measurement (1-100 characters)")
+        return render_template("new_sample_form.html", filled= filled)
+    
+    if len(sampleValue)< 1 or len(sampleValue) > 100:
+        flash("Error! Please enter a valid sample value (1-100 characters)")
+        return render_template("new_sample_form.html", filled= filled)
     
     if not re.match(datePattern, sampleDate):
             flash("Error! Please use yyyy-mm-dd date format")

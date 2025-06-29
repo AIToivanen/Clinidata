@@ -15,7 +15,7 @@
             <b>{{ message }}</b>
         </p>
     {% endfor %}
-    
+
   <form action="/samples/{{ sample.id }}/edit" method="post">
     <p>
       patientId<br/>
@@ -44,7 +44,9 @@
       Sample date: <br>
       <input type="text" name="sampleDate", value="{{sample.sampleDate}}" maxlength="10" required/>
     </p>
-  
+    
+    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
+    
     <input type="submit" value="Accept changes" />
 
   </form>

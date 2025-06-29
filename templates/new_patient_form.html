@@ -34,7 +34,7 @@
       Date of birth: <br/>
       <input type="text" name="dateOfBirth"  value="{{ filled.dateOfBirth }}" maxlength="10" required />
     </p>
-  
+    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
     <input type="submit" value="Add patient" />
 
   </form>

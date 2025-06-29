@@ -30,7 +30,8 @@
       <input type="text" name="dateOfDiagnosis" value="{{ filled.date }}" maxlength="10" required />
     </p>
     
-  
+    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
+    
     <input type="submit" value="Add diagnosis" />
 
   </form>

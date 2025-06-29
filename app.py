@@ -3,6 +3,7 @@ from flask import render_template, request, session, redirect, abort, flash
 from werkzeug.security import generate_password_hash, check_password_hash
 import config
 import sqlite3
+import secrets
 import controller
 import db
 
@@ -17,11 +18,21 @@ def requireLogin():
     if "userid" not in session:
         abort(403)
 
+def checkCsrf():
+    if request.form["csrf_token"] != session["csrf_token"]:
+        abort(403)
+
 @app.route("/")
 def index():
-    patients= controller.getPatients()
-    diagnoses= controller.getDiagnoses()
-    samples= controller.getSamples()
+
+    if "userid" not in session:
+        patients= {}
+        diagnoses= {}
+        samples= {}
+    else:
+        patients= controller.getPatients()
+        diagnoses= controller.getDiagnoses()
+        samples= controller.getSamples()
 
     return render_template("landing.html", user= user, patients= patients, diagnoses= diagnoses, samples= samples)
 
@@ -40,6 +51,8 @@ def login():
   
         session["userid"]=   db.query("SELECT id FROM users WHERE username = ?", (username,))[0][0]
         session["username"]= username
+        session["csrf_token"] = secrets.token_hex(16)
+
         return redirect("/")
     else:
         flash("Error: incorrect username or password!")
@@ -49,6 +62,7 @@ def login():
 def logout():
     del session["username"]
     del session["userid"]
+    del session["csrf_token"]
     flash("Logged out successfully")
     return redirect("/")
 
@@ -58,6 +72,9 @@ def create_user_form():
 
 @app.route("/search")
 def searchPatients():
+
+    requireLogin()
+
     query= request.args.get("query")
     results= controller.search(query)
     return render_template("search_results.html", query= query, results= results)
@@ -89,6 +106,9 @@ def create_user():
 
 @app.route("/users/<int:userid>")
 def showUser(userid):
+
+    requireLogin()
+
     user = controller.getUsers(userid)
     patients= controller.getUserPatients(userid)
     diagnoses= controller.getUserDiagnoses(userid)
@@ -107,6 +127,10 @@ def addPatientForm():
 
 @app.route("/patients/add", methods= ["POST"])
 def addPatient():
+
+    requireLogin()
+    checkCsrf()
+
     ssid= request.form["ssid"]
     firstName= request.form["firstName"]
     lastName= request.form["lastName"]
@@ -129,11 +153,17 @@ def addPatient():
 
 @app.route("/patients")
 def showPatients():
+
+    requireLogin()
+    
     patients= controller.getPatients()
     return render_template("patient_list.html", patients= patients)
 
 @app.route("/patients/<int:patientId>")
 def showPatient(patientId):
+
+    requireLogin()
+
     patient= controller.getPatients(patientId)
     diagnoses= controller.getPatientDiagnoses(patientId)
     samples= controller.getPatientSamples(patientId)
@@ -147,7 +177,9 @@ def showPatient(patientId):
 
 @app.route("/patients/<int:patientId>/comment/form")
 def commentPatientForm(patientId):
-    
+
+    requireLogin()
+
     patient= controller.getPatients(patientId)
     if  len(patient)==0:
         flash("Error: patient not found")
@@ -157,6 +189,10 @@ def commentPatientForm(patientId):
 
 @app.route("/patients/<int:patientId>/comment", methods= ["POST"] )
 def commentPatient(patientId):
+
+    requireLogin()
+    checkCsrf()
+
     userid= session["userid"]
     comment= request.form["content"]
     commentId= controller.addComment(patientId, userid, comment)
@@ -164,6 +200,10 @@ def commentPatient(patientId):
 
 @app.route("/patients/<int:patientId>/edit", methods= ["GET", "POST"] )
 def editPatient(patientId):
+
+    requireLogin()
+    checkCsrf()
+
     patient= controller.getPatients(patientId)
     
     if  len(patient)==0:
@@ -183,6 +223,10 @@ def editPatient(patientId):
         
 @app.route("/patients/<int:patientId>/delete", methods= ["GET", "POST"] )
 def deletePatient(patientId):
+
+    requireLogin()
+    checkCsrf()
+
     patient= controller.getPatients(patientId)
     if request.method == "GET":
         return render_template("delete_patient_form.html", patient= patient)
@@ -197,6 +241,10 @@ def addDiagnosisForm():
     
 @app.route("/diagnoses/add", methods= ["POST"] )
 def addDiagnosis():
+
+    requireLogin()
+    checkCsrf()
+
     ssid= request.form["ssid"]
     icd11= request.form["icd11"]
     dateOfDiagnosis= request.form["dateOfDiagnosis"]
@@ -216,6 +264,9 @@ def addDiagnosis():
         
 @app.route("/diagnoses/<int:diagnosisId>")
 def showDiagnosis(diagnosisId):
+
+    requireLogin()
+
     diagnoses= controller.getDiagnoses(diagnosisId)
     if len(diagnoses)== 0: 
         flash("Error! Diagnosis not found!")
@@ -224,11 +275,18 @@ def showDiagnosis(diagnosisId):
 
 @app.route("/diagnoses")
 def showDiagnoses():
+
+    requireLogin()
+
     diagnoses= controller.getDiagnoses()
     return render_template("diagnosis_list.html", diagnoses= diagnoses)
 
 @app.route("/diagnoses/<int:diagnosisId>/edit", methods= ["GET", "POST"] )
 def editDiagnosis(diagnosisId):
+
+    requireLogin()
+    checkCsrf()
+
     diagnosis= controller.getDiagnoses(diagnosisId)
 
     if len(diagnosis)== 0: 
@@ -247,6 +305,10 @@ def editDiagnosis(diagnosisId):
     
 @app.route("/diagnoses/<int:diagnosisId>/delete", methods= ["GET", "POST"] )
 def deleteDiagnosis(diagnosisId):
+
+    requireLogin()
+    checkCsrf()
+
     diagnosis= controller.getDiagnoses(diagnosisId)
     if len(diagnosis)== 0: 
         flash("Error! Diagnosis not found!")
@@ -265,6 +327,10 @@ def addSampleForm():
     
 @app.route("/samples/add", methods= ["POST"] )
 def addSample():
+
+    requireLogin()
+    checkCsrf()
+
     ssid= request.form["ssid"]
     sampleType= request.form["sampleType"]
     sampleMeasurement= request.form["sampleMeasurement"]
@@ -290,6 +356,9 @@ def addSample():
          
 @app.route("/samples/<int:sampleId>")
 def showSample(sampleId):
+
+    requireLogin()
+
     samples= controller.getSamples(sampleId)
     if len(samples)== 0: 
         flash("Error! Sample not found!")
@@ -299,11 +368,18 @@ def showSample(sampleId):
 
 @app.route("/samples")
 def showSamples():
+
+    requireLogin()
+    
     samples= controller.getSamples()
     return render_template("sample_list.html", samples= samples)
 
 @app.route("/samples/<int:sampleId>/edit", methods= ["GET", "POST"] )
 def editSample(sampleId):
+
+    requireLogin()
+    checkCsrf()
+
     sample= controller.getSamples(sampleId)
     if len(sample)== 0: 
         flash("Error! Sample not found!")
@@ -322,6 +398,10 @@ def editSample(sampleId):
     
 @app.route("/samples/<int:sampleId>/delete", methods= ["GET", "POST"] )
 def deleteSample(sampleId):
+
+    requireLogin()
+    checkCsrf()
+
     sample= controller.getSamples(sampleId)
     if len(sample)== 0: 
         flash("Error! Sample not found!")

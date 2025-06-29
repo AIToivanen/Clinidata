@@ -22,6 +22,9 @@
     <p>
         Note: This also deletes all diagnoses and samples associated with the patient!
     </p>
+
+    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
+    
     <input type="submit" name="delete" value="Delete" />
     <input type="submit" name="cancel" value="Cancel" />
   </form>

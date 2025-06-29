@@ -11,7 +11,7 @@
             <b>{{ message }}</b>
         </p>
     {% endfor %}
-    
+
      <p>
         <a href="/"> Back to front page </a>
     </p>
@@ -23,6 +23,9 @@
     <p>
         This action is permanent!
     </p>
+
+    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
+    
     <input type="submit" name="delete" value="Delete" />
     <input type="submit" name="cancel" value="Cancel" />
   </form>

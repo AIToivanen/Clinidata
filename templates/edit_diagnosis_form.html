@@ -14,7 +14,7 @@
             <b>{{ message }}</b>
         </p>
     {% endfor %}
-    
+
   <form action="/diagnoses/{{ diagnosis.id }}/edit" method="post">
     <p>
       Patient ID: <br/>
@@ -30,6 +30,8 @@
       Date of diagnosis: <br/>
       <input type="text" name="dateOfDiagnosis" , value="{{diagnosis.diagnosisDate}}" maxlength="10" required/>
     </p>
+    
+    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
     
     <input type="submit" value="Accept changes" />
 

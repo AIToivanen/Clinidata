@@ -43,7 +43,7 @@
       Sample date: <br>
       <input type="text" name="sampleDate" value= "{{ filled.sampleDate }}" maxlength="10" required/>
     </p>
-  
+    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
     <input type="submit" value="Add sample" />
 
   </form>

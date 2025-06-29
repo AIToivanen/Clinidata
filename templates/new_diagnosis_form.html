@@ -17,17 +17,17 @@
     <form action="/diagnoses/add" method="post">
     <p>
       Patient social security ID (SSID): <br/>
-      <input type="text" name="ssid" maxlength="11" required />
+      <input type="text" name="ssid" value="{{ filled.ssid }}" maxlength="11" required />
       
     </p>
     <p>
       ICD11 code: <br/>
-      <input type="text" name="icd11" maxlength="100" required />
+      <input type="text" name="icd11" value="{{ filled.icd11 }}" maxlength="100" required />
     
     </p>
     <p>
       Date of diagnosis: <br/>
-      <input type="text" name="dateOfDiagnosis" maxlength="10" required />
+      <input type="text" name="dateOfDiagnosis" value="{{ filled.date }}" maxlength="10" required />
     </p>
     
   

@@ -20,12 +20,12 @@
   <form action="/create_user" method="post">
     <p>
       Enter your username: <br/>
-      <input type="text" name="username" maxlength="40" required/>
+      <input type="text" name="username" value= "{{ filled.username }}" maxlength="40" required/>
       
     </p>
     <p>
       Enter your password: <br/>
-      <input type="password" name="password"  maxlength="100" required />
+      <input type="password" name="password" value= "{{ filled.password }}"  maxlength="100" required />
     
     </p>
     <p>

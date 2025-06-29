@@ -87,11 +87,10 @@ def deleteDiagnosis( id):
     db.execute(sql, [id])
 
 def addUser(username, passwordHashed, ):
-    try:
-        query= "INSERT INTO users (username, passwordHashed) VALUES (?, ?)"
-        db.execute(query, [username, passwordHashed])
-    except sqlite3.IntegrityError:
-        return "Error: username is already taken!"
+    
+    query= "INSERT INTO users (username, passwordHashed) VALUES (?, ?)"
+    db.execute(query, [username, passwordHashed])
+    
     
 def getUsers(usersId=None):
     if (usersId is not None):

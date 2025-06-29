@@ -18,21 +18,21 @@
     <form action="/patients/add" method="post">
     <p>
       Social security ID (SSID): <br/>
-      <input type="text" name="ssid" maxlength="11" required />
+      <input type="text" name="ssid"  value="{{ filled.ssid }}" maxlength="11" required />
       
     </p>
     <p>
       First name: <br/>
-      <input type="text" name="firstName" maxlength="100" required />
+      <input type="text" name="firstName"  value="{{ filled.firstName }}" maxlength="100" required />
     
     </p>
     <p>
       Last name: <br/>
-      <input type="text" name="lastName" maxlength="100" required />
+      <input type="text" name="lastName"  value="{{ filled.lastName }}" maxlength="100" required />
     </p>
     <p>
       Date of birth: <br/>
-      <input type="text" name="dateOfBirth" maxlength="10" required />
+      <input type="text" name="dateOfBirth"  value="{{ filled.dateOfBirth }}" maxlength="10" required />
     </p>
   
     <input type="submit" value="Add patient" />

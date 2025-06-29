@@ -14,11 +14,11 @@
             <b>{{ message }}</b>
         </p>
     {% endfor %}
-    
+
     <form action="/samples/add" method="post">
     <p>
       Patient social security ID (SSID): <br/>
-      <input type="text" name="ssid" maxlength="11" required/>
+      <input type="text" name="ssid" value= "{{ filled.ssid }}" maxlength="11" required/>
       
     </p>
     <p>
@@ -33,15 +33,15 @@
     </p>
     <p>
       Sample measurement: <br/>
-      <input type="text" name="sampleMeasurement" maxlength="100" required />
+      <input type="text" name="sampleMeasurement" value= "{{ filled.sampleMeasurement }}" maxlength="100" required />
     </p>
     <p>
       Measurement value: <br/>
-      <input type="text" name="sampleValue" maxlength="100" required/>
+      <input type="text" name="sampleValue" value= "{{ filled.sampleValue }}" maxlength="100" required/>
     </p>
     <p>
       Sample date: <br>
-      <input type="text" name="sampleDate" maxlength="10" required/>
+      <input type="text" name="sampleDate" value= "{{ filled.sampleDate }}" maxlength="10" required/>
     </p>
   
     <input type="submit" value="Add sample" />

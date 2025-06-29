@@ -43,6 +43,7 @@ def login():
         return redirect("/")
     else:
         flash("Error: incorrect username or password!")
+        return redirect("/login/form")
     
 @app.route("/logout")
 def logout():
@@ -52,7 +53,7 @@ def logout():
 
 @app.route("/create_user/form")
 def create_user_form():
-    return render_template("create_user_form.html")
+    return render_template("create_user_form.html", filled={})
 
 @app.route("/search")
 def searchPatients():
@@ -65,13 +66,25 @@ def create_user():
     username= request.form["username"]
     password= request.form["password"]
     password2= request.form["password2"]
+    filled= {"username": username,
+             "password": password}
+    
     if password != password2:
         flash("Error: the passwords don't match!")
-        return redirect("/create_user/form")
-    
-    passwordHashed= generate_password_hash(password)
-    controller.addUser(username, passwordHashed)
+        return render_template("create_user_form.html", filled= filled)
+
+    try:
+        passwordHashed= generate_password_hash(password)
+        controller.addUser(username, passwordHashed)
+        flash("User registered successfully!")
+    except :
+        flash("Error! Username is already taken")
+        return render_template("create_user_form.html", filled= filled)
     return redirect("/login/form")
+    
+    
+    
+    
 
 @app.route("/users/<int:userid>")
 def showUser(userid):
@@ -89,7 +102,7 @@ def showUser(userid):
 
 @app.route("/patients/add/form")
 def addPatientForm():
-    return render_template("new_patient_form.html")
+    return render_template("new_patient_form.html", filled= {})
 
 @app.route("/patients/add", methods= ["POST"])
 def addPatient():
@@ -98,7 +111,19 @@ def addPatient():
     lastName= request.form["lastName"]
     dateOfBirth= request.form["dateOfBirth"]
     userId= session["userid"]
-    patientId= controller.addPatient(ssid, firstName, lastName, dateOfBirth, userId)
+
+    filled= {"ssid":ssid, 
+             "firstName": firstName,
+             "lastName": lastName,
+             "dateOfBirth": dateOfBirth}
+             
+
+    try:
+        patientId= controller.addPatient(ssid, firstName, lastName, dateOfBirth, userId)
+    except :
+        flash("Error! Patient could not be added to the database")
+        return render_template("new_patient_form.html", filled= filled)
+   
     return redirect("/patients/"+str(patientId))
 
 @app.route("/patients")
@@ -167,7 +192,7 @@ def deletePatient(patientId):
     
 @app.route("/diagnoses/add/form" )
 def addDiagnosisForm():
-    return render_template("new_diagnosis_form.html")
+    return render_template("new_diagnosis_form.html", filled= {})
     
 @app.route("/diagnoses/add", methods= ["POST"] )
 def addDiagnosis():
@@ -175,7 +200,16 @@ def addDiagnosis():
     icd11= request.form["icd11"]
     dateOfDiagnosis= request.form["dateOfDiagnosis"]
     userId= session["userid"]
-    diagnosisId= controller.addDiagnosis(ssid, icd11, dateOfDiagnosis, userId)
+    filled= {"ssid":ssid, 
+             "icd11": icd11,
+             "date": dateOfDiagnosis}
+
+    try:
+        diagnosisId= controller.addDiagnosis(ssid, icd11, dateOfDiagnosis, userId)
+    except KeyError:
+        flash("Error! The provided SSID matches no patient")
+        return render_template("new_diagnosis_form.html", filled= filled)
+    
     return redirect("/diagnoses/"+str(diagnosisId))
     
         
@@ -226,7 +260,7 @@ def deleteDiagnosis(diagnosisId):
     
 @app.route("/samples/add/form" )
 def addSampleForm():
-    return render_template("new_sample_form.html")
+    return render_template("new_sample_form.html", filled= {})
     
 @app.route("/samples/add", methods= ["POST"] )
 def addSample():
@@ -236,7 +270,20 @@ def addSample():
     sampleValue= request.form["sampleValue"]
     sampleDate= request.form["sampleDate"]
     userId= session["userid"]
-    sampleId= controller.addSample(ssid, sampleType, sampleMeasurement, sampleValue, sampleDate, userId)
+
+    filled= {"ssid":ssid, 
+             "sampleType": sampleType,
+             "sampleMeasurement": sampleMeasurement,
+             "sampleValue": sampleValue,
+             "sampleDate": sampleDate}
+
+    try:
+        sampleId= controller.addSample(ssid, sampleType, sampleMeasurement, sampleValue, sampleDate, userId)
+    except KeyError:
+        flash("Error! The provided SSID matches no patient")
+        return render_template("new_sample_form.html", filled= filled)
+    
+    
     return redirect("/samples/"+str(sampleId))
     
          

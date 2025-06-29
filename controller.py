@@ -3,7 +3,7 @@ import sqlite3
 
 
 def search(query):
-    sql= """SELECT * FROM patients 
+    sql= """SELECT id, firstName, lastName, ssid, dateOfBirth, usersId FROM patients 
     WHERE patients.ssid LIKE ? OR
     patients.firstName LIKE ? OR
     patients.lastName LIKE ? OR 
@@ -95,11 +95,11 @@ def addUser(username, passwordHashed, ):
 def getUsers(usersId=None):
     if (usersId is not None):
         
-        query= "SELECT * FROM users WHERE id = ?"
+        query= "SELECT id, username, passwordHashed FROM users WHERE id = ?"
         return db.query(query, [usersId])
         
     else:
-        query= "SELECT * FROM users"
+        query= "SELECT id, username, passwordHashed FROM users"
         return db.query(query)
 
 
@@ -110,66 +110,66 @@ def deleteUser( id):
 def getPatients(patientId=None):
     if (patientId is not None):
         
-        query= "SELECT * FROM patients WHERE id = ?"
+        query= "SELECT id, firstName, lastName, ssid, dateOfBirth, usersId FROM patients WHERE id = ?"
         return db.query(query, [patientId])
         
     else:
-        query= "SELECT * FROM patients"
+        query= "SELECT id, firstName, lastName, ssid, dateOfBirth, usersId FROM patients"
         return db.query(query)
     
 def getUserPatients(usersId):
         
-    query= "SELECT * FROM patients WHERE usersId = ?"
+    query= "SELECT id, firstName, lastName, ssid, dateOfBirth, usersId FROM patients WHERE usersId = ?"
     return db.query(query, [usersId])
     
 def getDiagnoses(diagnosisId=None):
     if (diagnosisId is not None):
         
-        query= "SELECT * FROM diagnoses WHERE id = ?"
+        query= "SELECT id, patientsId, icd11, diagnosisDate, usersId FROM diagnoses WHERE id = ?"
         return db.query(query, [diagnosisId])
         
     else:
-        query= "SELECT * FROM diagnoses"
+        query= "SELECT id, patientsId, icd11, diagnosisDate, usersId FROM diagnoses"
         return db.query(query)
     
 def getUserDiagnoses(usersId):
         
-    query= "SELECT * FROM diagnoses WHERE usersId = ?"
+    query= "SELECT id, patientsId, icd11, diagnosisDate, usersId FROM diagnoses WHERE usersId = ?"
     return db.query(query, [usersId])
 
 def getPatientDiagnoses(patientId=None):
     if (patientId is not None):
         
-        query= "SELECT * FROM diagnoses WHERE patientsId = ?"
+        query= "SELECT id, patientsId, icd11, diagnosisDate, usersId FROM diagnoses WHERE patientsId = ?"
         return db.query(query, [patientId])
         
     else:
-        query= "SELECT * FROM diagnoses"
+        query= "SELECT id, patientsId, icd11, diagnosisDate, usersId FROM diagnoses"
         return db.query(query)
     
 def getSamples(sampleId=None):
     if (sampleId is not None):
         
-        query= "SELECT * FROM samples where id = ?"
+        query= "SELECT id, patientsId, sampleType, sampleMeasurement, sampleValue, sampleDate, usersId FROM samples where id = ?"
         return db.query(query, [sampleId])
         
     else:
-        query= "SELECT * FROM samples"
+        query= "SELECT id, patientsId, sampleType, sampleMeasurement, sampleValue, sampleDate, usersId FROM samples"
         return db.query(query)
     
 def getUserSamples(usersId):
         
-    query= "SELECT * FROM samples WHERE usersId = ?"
+    query= "SELECT id, patientsId, sampleType, sampleMeasurement, sampleValue, sampleDate, usersId FROM samples WHERE usersId = ?"
     return db.query(query, [usersId])
     
 def getPatientSamples(patientId=None):
     if (patientId is not None):
         
-        query= "SELECT * FROM samples WHERE patientsId = ?"
+        query= "SELECT id, patientsId, sampleType, sampleMeasurement, sampleValue, sampleDate, usersId FROM samples WHERE patientsId = ?"
         return db.query(query, [patientId])
         
     else:
-        query= "SELECT * FROM samples"
+        query= "SELECT id, patientsId, sampleType, sampleMeasurement, sampleValue, sampleDate, usersId FROM samples"
         return db.query(query)
     
 
@@ -183,15 +183,15 @@ def addComment(patientsId, usersId, content ):
 
 def getUserComments(usersId):
         
-    query= "SELECT * FROM comments WHERE usersId = ?"
+    query= "SELECT id, usersId, patientsId, content, commentDate FROM comments WHERE usersId = ?"
     return db.query(query, [usersId])
 
 def getPatientComments(patientId=None):
     if (patientId is not None):
         
-        query= "SELECT * FROM comments WHERE patientsId = ?"
+        query= "SELECT id, usersId, patientsId, content, commentDate FROM comments WHERE patientsId = ?"
         return db.query(query, [patientId])
         
     else:
-        query= "SELECT * FROM comments"
+        query= "SELECT id, usersId, patientsId, content, commentDate FROM comments"
         return db.query(query)

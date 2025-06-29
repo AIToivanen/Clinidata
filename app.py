@@ -4,6 +4,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 import config
 import sqlite3
 import secrets
+import re
 import controller
 import db
 
@@ -13,6 +14,8 @@ try:
     user= session["username"]
 except:
     user= "guest"
+
+datePattern = r'^\d{4}-\d{2}-\d{2}$'
 
 def requireLogin():
     if "userid" not in session:
@@ -142,6 +145,10 @@ def addPatient():
              "lastName": lastName,
              "dateOfBirth": dateOfBirth}
              
+    if not re.match(datePattern, dateOfBirth):
+        flash("Error! Please use yyyy-mm-dd date format")
+        return render_template("new_patient_form.html", filled= filled)
+   
 
     try:
         patientId= controller.addPatient(ssid, firstName, lastName, dateOfBirth, userId)
@@ -202,7 +209,7 @@ def commentPatient(patientId):
 def editPatient(patientId):
 
     requireLogin()
-    checkCsrf()
+    
 
     patient= controller.getPatients(patientId)
     
@@ -214,10 +221,16 @@ def editPatient(patientId):
     if request.method == "GET":
         return render_template("edit_patient_form.html", patient= patient)
     if request.method == "POST":
+        checkCsrf()
         ssid= request.form["ssid"]
         firstName= request.form["firstName"]
         lastName= request.form["lastName"]
         dateOfBirth= request.form["dateOfBirth"]
+
+        if not re.match(datePattern, dateOfBirth):
+            flash("Error! Please use yyyy-mm-dd date format")
+            return render_template("edit_patient_form.html", patient= patient)
+        
         controller.updatePatient(ssid, firstName, lastName, dateOfBirth, patientId)
         return redirect("/patients/"+str(patientId))
         
@@ -225,12 +238,13 @@ def editPatient(patientId):
 def deletePatient(patientId):
 
     requireLogin()
-    checkCsrf()
+    
 
     patient= controller.getPatients(patientId)
     if request.method == "GET":
         return render_template("delete_patient_form.html", patient= patient)
     if request.method == "POST":
+        checkCsrf()
         if "delete" in request.form:
             controller.deletePatient(patientId)
         return redirect("/patients")
@@ -253,6 +267,9 @@ def addDiagnosis():
              "icd11": icd11,
              "date": dateOfDiagnosis}
 
+    if not re.match(datePattern, dateOfDiagnosis):
+        flash("Error! Please use yyyy-mm-dd date format")
+        return render_template("new_diagnosis_form.html", filled= filled)
     try:
         diagnosisId= controller.addDiagnosis(ssid, icd11, dateOfDiagnosis, userId)
     except KeyError:
@@ -285,7 +302,7 @@ def showDiagnoses():
 def editDiagnosis(diagnosisId):
 
     requireLogin()
-    checkCsrf()
+    #checkCsrf()
 
     diagnosis= controller.getDiagnoses(diagnosisId)
 
@@ -297,9 +314,14 @@ def editDiagnosis(diagnosisId):
     if request.method == "GET":
         return render_template("edit_diagnosis_form.html", diagnosis= diagnosis)
     if request.method == "POST":
+        checkCsrf()
         patientId= request.form["patientId"]
         icd11= request.form["icd11"]
-        dateOfDiagnosis= request.form["dateOfDiagnosis"]
+        dateOfDiagnosis= request.form["dateOfDiagnosis"] 
+        if not re.match(datePattern, dateOfDiagnosis):
+            flash("Error! Please use yyyy-mm-dd date format")
+            return render_template("edit_diagnosis_form.html", diagnosis= diagnosis)
+        
         controller.updateDiagnosis(patientId, icd11, dateOfDiagnosis, diagnosisId)
         return redirect("/diagnoses/"+str(diagnosisId))
     
@@ -307,7 +329,7 @@ def editDiagnosis(diagnosisId):
 def deleteDiagnosis(diagnosisId):
 
     requireLogin()
-    checkCsrf()
+    
 
     diagnosis= controller.getDiagnoses(diagnosisId)
     if len(diagnosis)== 0: 
@@ -317,6 +339,8 @@ def deleteDiagnosis(diagnosisId):
     if request.method == "GET":
         return render_template("delete_diagnosis_form.html", diagnosis= diagnosis)
     if request.method == "POST":
+        checkCsrf()
+
         if "delete" in request.form:
             controller.deleteDiagnosis(diagnosisId)
         return redirect("/diagnoses")
@@ -343,6 +367,10 @@ def addSample():
              "sampleMeasurement": sampleMeasurement,
              "sampleValue": sampleValue,
              "sampleDate": sampleDate}
+    
+    if not re.match(datePattern, sampleDate):
+            flash("Error! Please use yyyy-mm-dd date format")
+            return render_template("new_sample_form.html", filled= filled)
 
     try:
         sampleId= controller.addSample(ssid, sampleType, sampleMeasurement, sampleValue, sampleDate, userId)
@@ -370,7 +398,7 @@ def showSample(sampleId):
 def showSamples():
 
     requireLogin()
-    
+
     samples= controller.getSamples()
     return render_template("sample_list.html", samples= samples)
 
@@ -378,7 +406,7 @@ def showSamples():
 def editSample(sampleId):
 
     requireLogin()
-    checkCsrf()
+    
 
     sample= controller.getSamples(sampleId)
     if len(sample)== 0: 
@@ -388,11 +416,17 @@ def editSample(sampleId):
     if request.method == "GET":
         return render_template("edit_sample_form.html", sample= sample)
     if request.method == "POST":
+        checkCsrf()
         patientId= request.form["patientId"]
         sampleType= request.form["sampleType"]
         sampleMeasurement= request.form["sampleMeasurement"]
         sampleValue= request.form["sampleValue"]
         sampleDate= request.form["sampleDate"]
+
+        if not re.match(datePattern, sampleDate):
+            flash("Error! Please use yyyy-mm-dd date format")
+            return render_template("edit_sample_form.html", sample= sample)
+        
         controller.updateSample(patientId, sampleType, sampleMeasurement, sampleValue, sampleDate, sampleId)
         return redirect("/samples/"+str(sampleId))
     
@@ -400,7 +434,7 @@ def editSample(sampleId):
 def deleteSample(sampleId):
 
     requireLogin()
-    checkCsrf()
+    
 
     sample= controller.getSamples(sampleId)
     if len(sample)== 0: 
@@ -410,6 +444,7 @@ def deleteSample(sampleId):
     if request.method == "GET":
         return render_template("delete_sample_form.html", sample= sample)
     if request.method == "POST":
+        checkCsrf()
         if "delete" in request.form:
             controller.deleteSample(sampleId)
         return redirect("/samples")
